@@ -506,6 +506,163 @@
             background: rgba(255, 255, 255, 0.08);
         }
 
+        /* ─── GARDEN SPECIFIC ─── */
+        .garden-plant-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 18px;
+            padding: 14px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+        .garden-plant-card:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+        .garden-plant-card .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .garden-plant-card .plant-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .garden-plant-card .plant-info .icon {
+            font-size: 32px;
+        }
+        .garden-plant-card .plant-info .name {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .garden-plant-card .plant-info .sub {
+            font-size: 12px;
+            opacity: 0.5;
+        }
+        .garden-plant-card .status-badge {
+            font-size: 12px;
+            background: rgba(76, 175, 80, 0.15);
+            color: #81c784;
+            padding: 2px 12px;
+            border-radius: 30px;
+            border: 1px solid rgba(76, 175, 80, 0.1);
+            white-space: nowrap;
+        }
+        .garden-plant-card .status-badge.harvested {
+            background: rgba(33, 150, 243, 0.12);
+            color: #64b5f6;
+            border-color: rgba(33, 150, 243, 0.1);
+        }
+        .garden-plant-card .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .garden-plant-card .actions button {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #e8edf5;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .garden-plant-card .actions button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .garden-plant-card .actions button.danger {
+            color: #ef9a9a;
+            border-color: rgba(244, 67, 54, 0.2);
+        }
+        .garden-plant-card .actions button.danger:hover {
+            background: rgba(244, 67, 54, 0.1);
+        }
+        .garden-plant-card .progress {
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            opacity: 0.7;
+        }
+        .garden-plant-card .progress .bar {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .garden-plant-card .progress .bar .fill {
+            height: 100%;
+            background: #81c784;
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+        .garden-plant-card .checklist {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+            font-size: 13px;
+        }
+        .garden-plant-card .checklist .item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            opacity: 0.6;
+        }
+        .garden-plant-card .checklist .item.done {
+            opacity: 1;
+            color: #81c784;
+        }
+        .garden-plant-card .checklist .item .emoji {
+            font-size: 16px;
+        }
+
+        .add-plant-section {
+            margin-top: 8px;
+        }
+        .add-plant-section select {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #e8edf5;
+            padding: 8px 14px;
+            border-radius: 30px;
+            font-size: 14px;
+            outline: none;
+            width: 100%;
+            max-width: 280px;
+        }
+        .add-plant-section select option {
+            background: #1a1f2b;
+        }
+        .add-plant-section button {
+            background: rgba(76, 175, 80, 0.15);
+            border: 1px solid rgba(76, 175, 80, 0.2);
+            color: #81c784;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-left: 8px;
+        }
+        .add-plant-section button:hover {
+            background: rgba(76, 175, 80, 0.25);
+        }
+
+        .empty-garden {
+            text-align: center;
+            padding: 30px 20px;
+            opacity: 0.5;
+        }
+
         /* ─── RESPONSIVE ─── */
         @media (min-width: 768px) {
             .sidebar {
@@ -555,6 +712,10 @@
             }
             .plant-detail-header .name-group .name {
                 font-size: 20px;
+            }
+            .garden-plant-card .row {
+                flex-direction: column;
+                align-items: stretch;
             }
         }
 
@@ -658,6 +819,80 @@
             opacity: 0.3;
             margin: 0 4px;
         }
+
+        /* ─── MODAL OVERLAY ─── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-box {
+            background: #1a1f2b;
+            border-radius: 28px;
+            padding: 28px 24px;
+            max-width: 380px;
+            width: 90%;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+        .modal-box .title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .modal-box .desc {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+        .modal-box .actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        .modal-box .actions button {
+            padding: 8px 20px;
+            border-radius: 30px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-box .actions .btn-cancel {
+            background: rgba(255, 255, 255, 0.05);
+            color: #e8edf5;
+        }
+        .modal-box .actions .btn-cancel:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .modal-box .actions .btn-danger {
+            background: rgba(244, 67, 54, 0.15);
+            color: #ef9a9a;
+            border: 1px solid rgba(244, 67, 54, 0.2);
+        }
+        .modal-box .actions .btn-danger:hover {
+            background: rgba(244, 67, 54, 0.25);
+        }
+        .modal-box .actions .btn-confirm {
+            background: rgba(76, 175, 80, 0.15);
+            color: #81c784;
+            border: 1px solid rgba(76, 175, 80, 0.2);
+        }
+        .modal-box .actions .btn-confirm:hover {
+            background: rgba(76, 175, 80, 0.25);
+        }
     </style>
 </head>
 <body>
@@ -674,6 +909,7 @@
         </div>
         <nav class="sidebar-nav">
             <a href="#dashboard" class="active" data-page="dashboard"><span class="icon">📊</span> Dashboard</a>
+            <a href="#garden" data-page="garden"><span class="icon">🌻</span> My Garden</a>
             <a href="#plants" data-page="plants"><span class="icon">🌿</span> All Plants</a>
             <a href="#calendar" data-page="calendar"><span class="icon">📅</span> Planting Calendar</a>
             <a href="#about" data-page="about"><span class="icon">ℹ️</span> About</a>
@@ -743,6 +979,26 @@
             </div>
         </div>
 
+        <!-- My Garden -->
+        <div class="page" id="page-garden">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🌻 My Garden</span>
+                    <span style="font-size:12px; opacity:0.4;" id="gardenCount">0 plants</span>
+                </div>
+                <div class="add-plant-section">
+                    <select id="addPlantSelect">
+                        <option value="">-- Select a plant to add --</option>
+                    </select>
+                    <button id="addPlantBtn">➕ Add to Garden</button>
+                    <span style="font-size:12px; opacity:0.3; margin-left:8px;">(today as planting day)</span>
+                </div>
+                <div id="gardenList" style="margin-top:12px;">
+                    <!-- rendered by JS -->
+                </div>
+            </div>
+        </div>
+
         <!-- All Plants -->
         <div class="page" id="page-plants">
             <div class="card">
@@ -806,6 +1062,18 @@
         </div>
     </div>
 
+    <!-- ─── MODAL ─── -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <div class="title" id="modalTitle">Confirm</div>
+            <div class="desc" id="modalDesc">Are you sure?</div>
+            <div class="actions">
+                <button class="btn-cancel" id="modalCancel">Cancel</button>
+                <button class="btn-danger" id="modalConfirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ─── TOAST ─── -->
     <div class="toast" id="toast"></div>
 
@@ -813,7 +1081,7 @@
         (function() {
             'use strict';
 
-            // ─── ENHANCED PLANT DATABASE (PH crops) ────────────────────
+            // ─── PLANT DATABASE (same as before) ────────────────────────
             const PLANTS = [{
                 id: 'palay',
                 name: 'Palay (Rice)',
@@ -1522,6 +1790,15 @@
             const seasonalPlantsList = $('seasonalPlantsList');
             const toast = $('toast');
             const sidebarLocation = $('sidebarLocation');
+            const gardenList = $('gardenList');
+            const gardenCount = $('gardenCount');
+            const addPlantSelect = $('addPlantSelect');
+            const addPlantBtn = $('addPlantBtn');
+            const modalOverlay = $('modalOverlay');
+            const modalTitle = $('modalTitle');
+            const modalDesc = $('modalDesc');
+            const modalCancel = $('modalCancel');
+            const modalConfirm = $('modalConfirm');
 
             // ─── STATE ──────────────────────────────────────────────────
             let currentLat = null;
@@ -1535,11 +1812,55 @@
             let searchQuery = '';
             let currentPage = 'dashboard';
             let selectedPlantId = null;
+            let gardenPlants = []; // array of { id, plantId, plantingDate, wateredDates, fertilizedDates, harvested: bool, harvestDate? }
+            let modalCallback = null;
+
+            // ─── LOCAL STORAGE ──────────────────────────────────────────
+            const STORAGE_KEY = 'plantadvisor_garden';
+
+            function loadGarden() {
+                try {
+                    const data = localStorage.getItem(STORAGE_KEY);
+                    if (data) {
+                        gardenPlants = JSON.parse(data);
+                        // ensure each entry has wateredDates and fertilizedDates arrays
+                        gardenPlants = gardenPlants.map(p => {
+                            if (!p.wateredDates) p.wateredDates = [];
+                            if (!p.fertilizedDates) p.fertilizedDates = [];
+                            return p;
+                        });
+                    } else {
+                        gardenPlants = [];
+                    }
+                } catch (e) {
+                    gardenPlants = [];
+                }
+            }
+
+            function saveGarden() {
+                try {
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(gardenPlants));
+                } catch (e) {
+                    console.warn('Failed to save garden:', e);
+                }
+            }
 
             // ─── HELPERS ────────────────────────────────────────────────
             function formatTime(ts) {
                 const d = new Date(ts);
                 return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            function formatDate(ts) {
+                const d = new Date(ts);
+                return d.toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' });
+            }
+
+            function daysBetween(date1, date2) {
+                const d1 = new Date(date1);
+                const d2 = new Date(date2);
+                const diffTime = Math.abs(d2 - d1);
+                return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             }
 
             function showError(msg) {
@@ -1559,6 +1880,29 @@
                     toast.classList.remove('visible');
                 }, duration);
             }
+
+            function showModal(title, desc, confirmText, confirmClass, callback) {
+                modalTitle.textContent = title;
+                modalDesc.textContent = desc;
+                modalConfirm.textContent = confirmText || 'Confirm';
+                modalConfirm.className = confirmClass || 'btn-danger';
+                modalCallback = callback;
+                modalOverlay.classList.add('visible');
+            }
+
+            function hideModal() {
+                modalOverlay.classList.remove('visible');
+                modalCallback = null;
+            }
+
+            modalCancel.addEventListener('click', hideModal);
+            modalConfirm.addEventListener('click', function() {
+                if (modalCallback) modalCallback();
+                hideModal();
+            });
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) hideModal();
+            });
 
             // ─── WEATHER HELPERS ─────────────────────────────────────────
             function getWeatherEmoji(code) {
@@ -1678,12 +2022,14 @@
                     if (target) target.classList.add('active');
                     const titles = {
                         dashboard: 'Dashboard',
+                        garden: 'My Garden',
                         plants: 'All Plants',
                         calendar: 'Planting Calendar',
                         about: 'About'
                     };
                     pageTitle.textContent = titles[page] || 'PlantAdvisor';
                     if (page === 'dashboard') updateDashboard();
+                    if (page === 'garden') renderGarden();
                     if (page === 'plants') renderAllPlants();
                     if (page === 'calendar') renderCalendar();
                     if (page === 'about') {}
@@ -1723,7 +2069,6 @@
                 return data;
             }
 
-            // ─── REVERSE GEOCODE (detailed address) ──────────────────────
             async function fetchLocationDetails(lat, lon) {
                 const url =
                     `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=16&accept-language=en`;
@@ -1788,7 +2133,6 @@
                     });
                 });
 
-                // Update topbar
                 topWeatherIcon.textContent = getWeatherEmoji(code);
                 topTemp.textContent = `${temp}°`;
                 topCond.textContent = getWeatherDesc(code);
@@ -2006,6 +2350,231 @@
                 seasonalPlantsList.innerHTML = listHtml || '<div style="opacity:0.4;">No plants are in season this month.</div>';
             }
 
+            // ─── GARDEN FUNCTIONS ──────────────────────────────────────
+            function renderGarden() {
+                if (!weatherData) {
+                    gardenList.innerHTML = '<div class="loading-spinner"><span class="spin">🌿</span><br>Loading weather for garden…</div>';
+                    gardenCount.textContent = '0 plants';
+                    return;
+                }
+
+                // Populate select options
+                const currentSelect = addPlantSelect.value;
+                addPlantSelect.innerHTML = '<option value="">-- Select a plant to add --</option>';
+                for (const p of PLANTS) {
+                    const opt = document.createElement('option');
+                    opt.value = p.id;
+                    opt.textContent = `${p.icon} ${p.name}`;
+                    addPlantSelect.appendChild(opt);
+                }
+                if (currentSelect) addPlantSelect.value = currentSelect;
+
+                if (gardenPlants.length === 0) {
+                    gardenList.innerHTML = `
+                        <div class="empty-garden">
+                            🌱 Your garden is empty.<br>
+                            Select a plant above and click "Add to Garden" to start tracking!
+                        </div>
+                    `;
+                    gardenCount.textContent = '0 plants';
+                    return;
+                }
+
+                // Show each plant
+                let html = '';
+                const temp = Math.round(weatherData.current.temperature_2m);
+                const hum = Math.round(weatherData.current.relative_humidity_2m);
+                const precip = weatherData.current.precipitation || 0;
+
+                for (const gPlant of gardenPlants) {
+                    const plant = PLANTS.find(p => p.id === gPlant.plantId);
+                    if (!plant) continue;
+                    const plantingDate = new Date(gPlant.plantingDate);
+                    const now = new Date();
+                    const daysSince = Math.max(0, daysBetween(plantingDate, now));
+                    const daysToHarvest = Math.max(0, plant.daysToHarvest - daysSince);
+                    const progress = Math.min(100, (daysSince / plant.daysToHarvest) * 100);
+                    const isHarvested = gPlant.harvested || false;
+
+                    // Water needs: base waterPerDay adjusted by precipitation
+                    let waterNeeded = plant.waterPerDay;
+                    if (precip > 0) {
+                        // Reduce water by precipitation amount (simple: 1mm rain = 10% reduction)
+                        const reduction = Math.min(0.8, precip * 0.2);
+                        waterNeeded = Math.round(waterNeeded * (1 - reduction));
+                    }
+                    waterNeeded = Math.max(0, waterNeeded);
+
+                    // Check if watered today
+                    const todayStr = now.toDateString();
+                    const wateredToday = gPlant.wateredDates && gPlant.wateredDates.some(d => new Date(d).toDateString() ===
+                        todayStr);
+                    // Fertilizer: based on plant.fertilizer frequency (approx every 14 days)
+                    const fertInterval = 14; // days
+                    const lastFert = gPlant.fertilizedDates && gPlant.fertilizedDates.length > 0 ?
+                        new Date(gPlant.fertilizedDates[gPlant.fertilizedDates.length - 1]) :
+                        plantingDate;
+                    const daysSinceFert = daysBetween(lastFert, now);
+                    const fertDue = daysSinceFert >= fertInterval;
+
+                    html += `
+                        <div class="garden-plant-card" data-garden-id="${gPlant.id}">
+                            <div class="row">
+                                <div class="plant-info">
+                                    <span class="icon">${plant.icon}</span>
+                                    <div>
+                                        <div class="name">${plant.name}</div>
+                                        <div class="sub">Planted ${formatDate(gPlant.plantingDate)} · ${daysSince} days ago</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="status-badge ${isHarvested ? 'harvested' : ''}">${isHarvested ? '🌾 Harvested' : '🌱 Growing'}</span>
+                                </div>
+                            </div>
+                            ${!isHarvested ? `
+                            <div class="progress">
+                                <span>${Math.round(progress)}%</span>
+                                <div class="bar"><div class="fill" style="width:${Math.min(100, progress)}%;"></div></div>
+                                <span>${daysToHarvest} days to harvest</span>
+                            </div>
+                            <div class="checklist">
+                                <span class="item ${wateredToday ? 'done' : ''}">
+                                    <span class="emoji">💧</span> Water ${wateredToday ? '✅' : '❌'} (${waterNeeded} mL)
+                                </span>
+                                <span class="item ${fertDue ? 'done' : ''}">
+                                    <span class="emoji">🧪</span> Fertilizer ${fertDue ? '✅ due' : '⏳ in ' + (fertInterval - daysSinceFert) + ' days'}
+                                </span>
+                                <span class="item">
+                                    <span class="emoji">🌡️</span> ${temp}°C / ${hum}% humidity
+                                </span>
+                            </div>
+                            ` : `
+                            <div style="font-size:13px; opacity:0.6;">Harvested on ${formatDate(gPlant.harvestDate)}</div>
+                            `}
+                            <div class="actions">
+                                ${!isHarvested ? `
+                                <button class="water-btn" data-id="${gPlant.id}">💧 Water</button>
+                                <button class="fertilize-btn" data-id="${gPlant.id}">🧪 Fertilize</button>
+                                <button class="harvest-btn" data-id="${gPlant.id}">🌾 Harvest</button>
+                                ` : ''}
+                                <button class="danger delete-btn" data-id="${gPlant.id}">🗑️ Delete</button>
+                            </div>
+                        </div>
+                    `;
+                }
+                gardenList.innerHTML = html;
+                gardenCount.textContent = `${gardenPlants.length} plants`;
+
+                // Attach event listeners
+                gardenList.querySelectorAll('.water-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const id = this.dataset.id;
+                        waterPlant(id);
+                    });
+                });
+                gardenList.querySelectorAll('.fertilize-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const id = this.dataset.id;
+                        fertilizePlant(id);
+                    });
+                });
+                gardenList.querySelectorAll('.harvest-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const id = this.dataset.id;
+                        harvestPlant(id);
+                    });
+                });
+                gardenList.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const id = this.dataset.id;
+                        deletePlant(id);
+                    });
+                });
+            }
+
+            function addPlantToGarden(plantId) {
+                if (!plantId) {
+                    showToast('Please select a plant.', 2000);
+                    return;
+                }
+                const plant = PLANTS.find(p => p.id === plantId);
+                if (!plant) return;
+
+                // Check if already in garden (allow duplicates? we can allow, but maybe warn)
+                const now = new Date();
+                const newPlant = {
+                    id: Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+                    plantId: plantId,
+                    plantingDate: now.toISOString(),
+                    wateredDates: [],
+                    fertilizedDates: [],
+                    harvested: false,
+                    harvestDate: null
+                };
+                gardenPlants.push(newPlant);
+                saveGarden();
+                renderGarden();
+                showToast(`✅ Added ${plant.name} to your garden!`, 2000);
+            }
+
+            function waterPlant(gardenId) {
+                const gPlant = gardenPlants.find(p => p.id === gardenId);
+                if (!gPlant) return;
+                const now = new Date();
+                const todayStr = now.toDateString();
+                // Check if already watered today
+                if (gPlant.wateredDates.some(d => new Date(d).toDateString() === todayStr)) {
+                    showToast('💧 Already watered today!', 1500);
+                    return;
+                }
+                gPlant.wateredDates.push(now.toISOString());
+                saveGarden();
+                renderGarden();
+                showToast('💧 Watered!', 1000);
+            }
+
+            function fertilizePlant(gardenId) {
+                const gPlant = gardenPlants.find(p => p.id === gardenId);
+                if (!gPlant) return;
+                const now = new Date();
+                gPlant.fertilizedDates.push(now.toISOString());
+                saveGarden();
+                renderGarden();
+                showToast('🧪 Fertilized!', 1000);
+            }
+
+            function harvestPlant(gardenId) {
+                const gPlant = gardenPlants.find(p => p.id === gardenId);
+                if (!gPlant) return;
+                showModal('🌾 Harvest Plant',
+                    `Mark "${PLANTS.find(p => p.id === gPlant.plantId)?.name}" as harvested? This will stop tracking growth.`,
+                    'Harvest', 'btn-confirm', function() {
+                        gPlant.harvested = true;
+                        gPlant.harvestDate = new Date().toISOString();
+                        saveGarden();
+                        renderGarden();
+                        showToast('🌾 Harvested! Congratulations!', 2000);
+                    });
+            }
+
+            function deletePlant(gardenId) {
+                const gPlant = gardenPlants.find(p => p.id === gardenId);
+                if (!gPlant) return;
+                const plantName = PLANTS.find(p => p.id === gPlant.plantId)?.name || 'plant';
+                showModal('🗑️ Delete Plant',
+                    `Are you sure you want to delete "${plantName}" from your garden? This action cannot be undone.`,
+                    'Delete', 'btn-danger', function() {
+                        gardenPlants = gardenPlants.filter(p => p.id !== gardenId);
+                        saveGarden();
+                        renderGarden();
+                        showToast('🗑️ Plant deleted.', 1500);
+                    });
+            }
+
             // ─── REFRESH ──────────────────────────────────────────────────
             async function refreshWeather(showLoading = true) {
                 if (isRefreshing) return;
@@ -2017,11 +2586,10 @@
                 try {
                     const data = await fetchWeather(currentLat, currentLon);
                     weatherData = data;
-                    // Update location details
                     const details = await fetchLocationDetails(currentLat, currentLon);
                     updateLocationDisplay(details);
-                    // Update all views
                     if (currentPage === 'dashboard') updateDashboard();
+                    if (currentPage === 'garden') renderGarden();
                     if (currentPage === 'plants') renderAllPlants();
                     if (currentPage === 'plant-detail' && selectedPlantId) renderPlantDetail(selectedPlantId);
                     if (currentPage === 'calendar') renderCalendar();
@@ -2059,9 +2627,7 @@
                         try {
                             const details = await fetchLocationDetails(lat, lon);
                             updateLocationDisplay(details);
-                        } catch (_) {
-                            // fallback
-                        }
+                        } catch (_) {}
                         await refreshWeather(false);
                     },
                     (err) => {
@@ -2110,6 +2676,12 @@
                 navigateTo('plants');
             });
 
+            // ─── ADD PLANT TO GARDEN ──────────────────────────────────
+            addPlantBtn.addEventListener('click', function() {
+                const plantId = addPlantSelect.value;
+                addPlantToGarden(plantId);
+            });
+
             // ─── HASH ROUTING ──────────────────────────────────────────
             window.addEventListener('hashchange', function() {
                 const hash = location.hash.slice(1) || 'dashboard';
@@ -2133,6 +2705,7 @@
 
             // ─── INIT ──────────────────────────────────────────────────
             function init() {
+                loadGarden();
                 getLocation();
                 if (autoRefreshInterval) clearInterval(autoRefreshInterval);
                 autoRefreshInterval = setInterval(() => {
