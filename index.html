@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>🌱 PlantAdvisor · Smart Planting PH</title>
+    <!-- Font Awesome 6 (Professional Icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <style>
         /* ─── RESET & BASE ─── */
         * {
@@ -53,8 +55,11 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .sidebar-header .logo {
-            font-size: 28px;
+        .sidebar-header .logo-icon {
+            font-size: 26px;
+            color: #81c784;
+            width: 36px;
+            text-align: center;
         }
         .sidebar-header .title {
             font-size: 18px;
@@ -100,7 +105,7 @@
         }
 
         .sidebar-nav a .icon {
-            font-size: 20px;
+            font-size: 18px;
             width: 28px;
             text-align: center;
         }
@@ -239,6 +244,13 @@
         .card-title {
             font-size: 16px;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-title .icon {
+            font-size: 18px;
+            opacity: 0.8;
         }
 
         .plant-grid {
@@ -266,6 +278,7 @@
             font-size: 32px;
             display: block;
             margin-bottom: 4px;
+            color: #a8d5a2;
         }
         .plant-mini-card .name {
             font-size: 13px;
@@ -294,6 +307,9 @@
         }
         .plant-detail-header .icon {
             font-size: 56px;
+            color: #a8d5a2;
+            width: 70px;
+            text-align: center;
         }
         .plant-detail-header .name-group .name {
             font-size: 24px;
@@ -325,6 +341,12 @@
             opacity: 0.4;
             font-weight: 500;
             margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .detail-section .label .icon {
+            font-size: 13px;
         }
         .detail-section .value {
             font-size: 14px;
@@ -340,6 +362,18 @@
             padding: 10px 12px;
             border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .detail-grid-2 .item .label {
+            font-size: 11px;
+            opacity: 0.4;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .detail-grid-2 .item .value {
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 2px;
         }
 
         .disease-tag {
@@ -456,6 +490,9 @@
         }
         .seasonal-list .item .plant {
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         .seasonal-list .item .months {
             opacity: 0.5;
@@ -535,6 +572,9 @@
         }
         .garden-plant-card .plant-info .icon {
             font-size: 32px;
+            color: #a8d5a2;
+            width: 40px;
+            text-align: center;
         }
         .garden-plant-card .plant-info .name {
             font-size: 16px;
@@ -572,6 +612,9 @@
             font-size: 12px;
             cursor: pointer;
             transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         .garden-plant-card .actions button:hover {
             background: rgba(255, 255, 255, 0.1);
@@ -621,12 +664,16 @@
             opacity: 1;
             color: #81c784;
         }
-        .garden-plant-card .checklist .item .emoji {
-            font-size: 16px;
+        .garden-plant-card .checklist .item .icon {
+            font-size: 14px;
         }
 
         .add-plant-section {
             margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
         }
         .add-plant-section select {
             background: rgba(255, 255, 255, 0.04);
@@ -636,8 +683,8 @@
             border-radius: 30px;
             font-size: 14px;
             outline: none;
-            width: 100%;
-            max-width: 280px;
+            flex: 1;
+            min-width: 160px;
         }
         .add-plant-section select option {
             background: #1a1f2b;
@@ -651,10 +698,17 @@
             font-size: 14px;
             cursor: pointer;
             transition: all 0.2s;
-            margin-left: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         .add-plant-section button:hover {
             background: rgba(76, 175, 80, 0.25);
+        }
+        .add-plant-section .hint {
+            font-size: 12px;
+            opacity: 0.3;
+            margin-left: 4px;
         }
 
         .empty-garden {
@@ -709,6 +763,7 @@
             }
             .plant-detail-header .icon {
                 font-size: 40px;
+                width: 50px;
             }
             .plant-detail-header .name-group .name {
                 font-size: 20px;
@@ -716,6 +771,13 @@
             .garden-plant-card .row {
                 flex-direction: column;
                 align-items: stretch;
+            }
+            .add-plant-section {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .add-plant-section select {
+                min-width: unset;
             }
         }
 
@@ -851,6 +913,9 @@
             font-size: 18px;
             font-weight: 600;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         .modal-box .desc {
             font-size: 14px;
@@ -893,6 +958,21 @@
         .modal-box .actions .btn-confirm:hover {
             background: rgba(76, 175, 80, 0.25);
         }
+
+        /* Weather icon in top bar */
+        .weather-icon-lg {
+            font-size: 18px;
+        }
+        .refresh-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .sidebar-location-text {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
     </style>
 </head>
 <body>
@@ -900,22 +980,22 @@
     <!-- ─── SIDEBAR ─── -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <span class="logo">🌱</span>
+            <i class="fa-solid fa-seedling logo-icon"></i>
             <div>
                 <div class="title">PlantAdvisor</div>
                 <span class="sub">Smart Planting · PH</span>
             </div>
-            <button class="sidebar-close" id="sidebarClose">✕</button>
+            <button class="sidebar-close" id="sidebarClose"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <nav class="sidebar-nav">
-            <a href="#dashboard" class="active" data-page="dashboard"><span class="icon">📊</span> Dashboard</a>
-            <a href="#garden" data-page="garden"><span class="icon">🌻</span> My Garden</a>
-            <a href="#plants" data-page="plants"><span class="icon">🌿</span> All Plants</a>
-            <a href="#calendar" data-page="calendar"><span class="icon">📅</span> Planting Calendar</a>
-            <a href="#about" data-page="about"><span class="icon">ℹ️</span> About</a>
+            <a href="#dashboard" class="active" data-page="dashboard"><span class="icon"><i class="fa-solid fa-gauge-high"></i></span> Dashboard</a>
+            <a href="#garden" data-page="garden"><span class="icon"><i class="fa-solid fa-seedling"></i></span> My Garden</a>
+            <a href="#plants" data-page="plants"><span class="icon"><i class="fa-solid fa-leaf"></i></span> All Plants</a>
+            <a href="#calendar" data-page="calendar"><span class="icon"><i class="fa-solid fa-calendar-days"></i></span> Planting Calendar</a>
+            <a href="#about" data-page="about"><span class="icon"><i class="fa-solid fa-circle-info"></i></span> About</a>
         </nav>
         <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.04); font-size: 12px; opacity:0.3;">
-            <span id="sidebarLocation">📍 Detecting…</span>
+            <span id="sidebarLocation" class="sidebar-location-text"><i class="fa-solid fa-location-dot"></i> Detecting…</span>
         </div>
     </div>
 
@@ -926,10 +1006,10 @@
     <div class="main-content" id="mainContent">
         <!-- Top Bar -->
         <div class="topbar">
-            <button class="hamburger" id="hamburgerBtn">☰</button>
+            <button class="hamburger" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
             <span class="topbar-title" id="pageTitle">Dashboard</span>
             <div class="topbar-weather">
-                <span id="topWeatherIcon">🌤</span>
+                <i class="fa-solid fa-cloud-sun" id="topWeatherIcon"></i>
                 <span class="temp" id="topTemp">--°</span>
                 <span class="cond" id="topCond">Loading</span>
             </div>
@@ -940,7 +1020,7 @@
         <div class="page active" id="page-dashboard">
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">📍 Your Location</span>
+                    <span class="card-title"><i class="fa-solid fa-location-dot icon"></i> Your Location</span>
                     <span style="font-size:13px; opacity:0.5;" id="updateTime">—</span>
                 </div>
                 <div id="locationDisplay" class="location-full">
@@ -951,27 +1031,27 @@
                 </div>
                 <div style="margin-top:8px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
                     <span style="font-size:14px; opacity:0.6;">
-                        <span id="weatherDesc">--</span> · 💧 <span id="humidityDisp">--%</span> · 🌬 <span id="windDisp">-- km/h</span>
+                        <span id="weatherDesc">--</span> · <i class="fa-solid fa-droplet"></i> <span id="humidityDisp">--%</span> · <i class="fa-solid fa-wind"></i> <span id="windDisp">-- km/h</span>
                     </span>
-                    <button class="refresh-btn" id="refreshBtn" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.06); color:#fff; padding:6px 18px; border-radius:30px; font-size:13px; cursor:pointer;">⟳ Refresh</button>
+                    <button class="refresh-btn" id="refreshBtn" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.06); color:#fff; padding:6px 18px; border-radius:30px; font-size:13px; cursor:pointer;"><i class="fa-solid fa-rotate"></i> Refresh</button>
                 </div>
                 <div class="error-msg" id="errorMsg" style="background:rgba(244,67,54,0.12); border:1px solid rgba(244,67,54,0.2); border-radius:14px; padding:10px 14px; font-size:13px; color:#ff8a80; margin-top:10px; display:none;">
-                    ⚠️ <span id="errorText">Unable to load data.</span>
+                    <i class="fa-solid fa-triangle-exclamation"></i> <span id="errorText">Unable to load data.</span>
                 </div>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">🌟 Top Recommendations for You</span>
+                    <span class="card-title"><i class="fa-solid fa-star icon"></i> Top Recommendations</span>
                     <span style="font-size:12px; opacity:0.4;">based on current weather &amp; season</span>
                 </div>
                 <div class="plant-grid" id="topPlantsGrid">
-                    <div class="loading-spinner"><span class="spin">🌿</span><br>Analyzing…</div>
+                    <div class="loading-spinner"><i class="fa-solid fa-seedling spin"></i><br>Analyzing…</div>
                 </div>
             </div>
 
             <div class="card" style="background:rgba(255,255,255,0.02);">
-                <div class="card-title" style="font-size:14px; opacity:0.6;">🌾 Why these plants?</div>
+                <div class="card-title" style="font-size:14px; opacity:0.6;"><i class="fa-solid fa-wheat-awn"></i> Why these plants?</div>
                 <div style="font-size:13px; opacity:0.7; line-height:1.6; margin-top:6px;">
                     Each plant is scored based on your current temperature, humidity, and the current month's planting season.
                     The higher the match, the better it will thrive in your location right now.
@@ -983,15 +1063,15 @@
         <div class="page" id="page-garden">
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">🌻 My Garden</span>
+                    <span class="card-title"><i class="fa-solid fa-seedling icon"></i> My Garden</span>
                     <span style="font-size:12px; opacity:0.4;" id="gardenCount">0 plants</span>
                 </div>
                 <div class="add-plant-section">
                     <select id="addPlantSelect">
                         <option value="">-- Select a plant to add --</option>
                     </select>
-                    <button id="addPlantBtn">➕ Add to Garden</button>
-                    <span style="font-size:12px; opacity:0.3; margin-left:8px;">(today as planting day)</span>
+                    <button id="addPlantBtn"><i class="fa-solid fa-plus"></i> Add to Garden</button>
+                    <span class="hint">(today as planting day)</span>
                 </div>
                 <div id="gardenList" style="margin-top:12px;">
                     <!-- rendered by JS -->
@@ -1003,7 +1083,7 @@
         <div class="page" id="page-plants">
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">🌿 All Plants</span>
+                    <span class="card-title"><i class="fa-solid fa-leaf icon"></i> All Plants</span>
                     <span style="font-size:12px; opacity:0.4;" id="plantCount">0</span>
                 </div>
                 <input type="text" class="search-box" id="searchInput" placeholder="Search by name…">
@@ -1023,7 +1103,7 @@
 
         <!-- Plant Detail (hidden, shown via JS) -->
         <div class="page" id="page-plant-detail">
-            <button class="back-btn" id="backFromDetail">← Back to Plants</button>
+            <button class="back-btn" id="backFromDetail"><i class="fa-solid fa-arrow-left"></i> Back to Plants</button>
             <div id="plantDetailContainer">
                 <!-- rendered by JS -->
             </div>
@@ -1033,7 +1113,7 @@
         <div class="page" id="page-calendar">
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">📅 Planting Calendar</span>
+                    <span class="card-title"><i class="fa-solid fa-calendar-days icon"></i> Planting Calendar</span>
                     <span style="font-size:12px; opacity:0.4;" id="calendarMonthLabel">Loading…</span>
                 </div>
                 <div id="calendarContainer">
@@ -1041,7 +1121,7 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-title" style="font-size:14px; margin-bottom:8px;">🌱 What to plant this month</div>
+                <div class="card-title" style="font-size:14px; margin-bottom:8px;"><i class="fa-solid fa-seedling"></i> What to plant this month</div>
                 <div id="seasonalPlantsList" class="seasonal-list">
                     <!-- rendered by JS -->
                 </div>
@@ -1051,12 +1131,12 @@
         <!-- About -->
         <div class="page" id="page-about">
             <div class="card">
-                <div class="card-title" style="font-size:18px;">ℹ️ About PlantAdvisor PH</div>
+                <div class="card-title" style="font-size:18px;"><i class="fa-solid fa-circle-info"></i> About PlantAdvisor PH</div>
                 <div style="margin-top:12px; line-height:1.7; opacity:0.7; font-size:14px;">
                     <p>PlantAdvisor uses your real-time location and current weather to recommend the best crops to grow in the Philippines.</p>
                     <p style="margin-top:8px;">It considers temperature, humidity, and the planting season for each crop. The database includes rice, sugarcane, root crops, vegetables, and more — all suited for tropical climates.</p>
                     <p style="margin-top:8px;">Data is fetched from Open-Meteo for weather and OpenStreetMap for location names.</p>
-                    <p style="margin-top:8px; opacity:0.4; font-size:12px;">Made with ❤️ for Filipino gardeners.</p>
+                    <p style="margin-top:8px; opacity:0.4; font-size:12px;">Made with <i class="fa-solid fa-heart" style="color:#ef9a9a;"></i> for Filipino gardeners.</p>
                 </div>
             </div>
         </div>
@@ -1065,7 +1145,7 @@
     <!-- ─── MODAL ─── -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-box">
-            <div class="title" id="modalTitle">Confirm</div>
+            <div class="title" id="modalTitle"><i class="fa-solid fa-triangle-exclamation"></i> Confirm</div>
             <div class="desc" id="modalDesc">Are you sure?</div>
             <div class="actions">
                 <button class="btn-cancel" id="modalCancel">Cancel</button>
@@ -1081,12 +1161,12 @@
         (function() {
             'use strict';
 
-            // ─── PLANT DATABASE (same as before) ────────────────────────
+            // ─── PLANT DATABASE (with FontAwesome icon classes) ────────
             const PLANTS = [{
                 id: 'palay',
                 name: 'Palay (Rice)',
                 sci: 'Oryza sativa',
-                icon: '🌾',
+                icon: 'fa-wheat-awn',
                 category: 'grain',
                 idealTempMin: 22,
                 idealTempMax: 34,
@@ -1114,7 +1194,7 @@
                 id: 'tubo',
                 name: 'Tubo (Sugarcane)',
                 sci: 'Saccharum officinarum',
-                icon: '🌿',
+                icon: 'fa-leaf',
                 category: 'grain',
                 idealTempMin: 25,
                 idealTempMax: 38,
@@ -1142,7 +1222,7 @@
                 id: 'kamote',
                 name: 'Kamote (Sweet Potato)',
                 sci: 'Ipomoea batatas',
-                icon: '🍠',
+                icon: 'fa-carrot',
                 category: 'root',
                 idealTempMin: 20,
                 idealTempMax: 32,
@@ -1170,7 +1250,7 @@
                 id: 'kamotengkahoy',
                 name: 'Kamoteng Kahoy (Cassava)',
                 sci: 'Manihot esculenta',
-                icon: '🌱',
+                icon: 'fa-seedling',
                 category: 'root',
                 idealTempMin: 22,
                 idealTempMax: 35,
@@ -1198,7 +1278,7 @@
                 id: 'gabi',
                 name: 'Gabi (Taro)',
                 sci: 'Colocasia esculenta',
-                icon: '🍃',
+                icon: 'fa-leaf',
                 category: 'root',
                 idealTempMin: 22,
                 idealTempMax: 32,
@@ -1226,7 +1306,7 @@
                 id: 'ube',
                 name: 'Ube (Purple Yam)',
                 sci: 'Dioscorea alata',
-                icon: '🍠',
+                icon: 'fa-carrot',
                 category: 'root',
                 idealTempMin: 22,
                 idealTempMax: 32,
@@ -1254,7 +1334,7 @@
                 id: 'mani',
                 name: 'Mani (Peanut)',
                 sci: 'Arachis hypogaea',
-                icon: '🥜',
+                icon: 'fa-seedling',
                 category: 'grain',
                 idealTempMin: 20,
                 idealTempMax: 32,
@@ -1282,7 +1362,7 @@
                 id: 'munggo',
                 name: 'Munggo (Mungbean)',
                 sci: 'Vigna radiata',
-                icon: '🫘',
+                icon: 'fa-seedling',
                 category: 'grain',
                 idealTempMin: 20,
                 idealTempMax: 35,
@@ -1310,7 +1390,7 @@
                 id: 'mais',
                 name: 'Mais (Corn)',
                 sci: 'Zea mays',
-                icon: '🌽',
+                icon: 'fa-wheat-awn',
                 category: 'grain',
                 idealTempMin: 22,
                 idealTempMax: 34,
@@ -1338,7 +1418,7 @@
                 id: 'kamatis',
                 name: 'Kamatis (Tomato)',
                 sci: 'Solanum lycopersicum',
-                icon: '🍅',
+                icon: 'fa-apple-whole',
                 category: 'vegetable',
                 idealTempMin: 18,
                 idealTempMax: 30,
@@ -1366,7 +1446,7 @@
                 id: 'sili',
                 name: 'Sili (Chili)',
                 sci: 'Capsicum frutescens',
-                icon: '🌶️',
+                icon: 'fa-pepper-hot',
                 category: 'vegetable',
                 idealTempMin: 22,
                 idealTempMax: 35,
@@ -1394,7 +1474,7 @@
                 id: 'talong',
                 name: 'Talong (Eggplant)',
                 sci: 'Solanum melongena',
-                icon: '🍆',
+                icon: 'fa-eggplant',
                 category: 'vegetable',
                 idealTempMin: 20,
                 idealTempMax: 33,
@@ -1422,7 +1502,7 @@
                 id: 'ampalaya',
                 name: 'Ampalaya (Bitter Gourd)',
                 sci: 'Momordica charantia',
-                icon: '🥒',
+                icon: 'fa-cucumber',
                 category: 'vegetable',
                 idealTempMin: 22,
                 idealTempMax: 34,
@@ -1450,7 +1530,7 @@
                 id: 'okra',
                 name: 'Okra',
                 sci: 'Abelmoschus esculentus',
-                icon: '🫛',
+                icon: 'fa-seedling',
                 category: 'vegetable',
                 idealTempMin: 23,
                 idealTempMax: 35,
@@ -1478,7 +1558,7 @@
                 id: 'sitaw',
                 name: 'Sitaw (Long Bean)',
                 sci: 'Vigna unguiculata',
-                icon: '🫘',
+                icon: 'fa-seedling',
                 category: 'vegetable',
                 idealTempMin: 20,
                 idealTempMax: 35,
@@ -1506,7 +1586,7 @@
                 id: 'kalabasa',
                 name: 'Kalabasa (Squash)',
                 sci: 'Cucurbita maxima',
-                icon: '🎃',
+                icon: 'fa-pumpkin',
                 category: 'vegetable',
                 idealTempMin: 20,
                 idealTempMax: 32,
@@ -1534,7 +1614,7 @@
                 id: 'kangkong',
                 name: 'Kangkong (Water Spinach)',
                 sci: 'Ipomoea aquatica',
-                icon: '🌿',
+                icon: 'fa-leaf',
                 category: 'vegetable',
                 idealTempMin: 20,
                 idealTempMax: 35,
@@ -1562,7 +1642,7 @@
                 id: 'pechay',
                 name: 'Pechay (Bok Choy)',
                 sci: 'Brassica rapa subsp. chinensis',
-                icon: '🥬',
+                icon: 'fa-cabbage',
                 category: 'vegetable',
                 idealTempMin: 15,
                 idealTempMax: 28,
@@ -1590,7 +1670,7 @@
                 id: 'mustasa',
                 name: 'Mustasa (Mustard)',
                 sci: 'Brassica juncea',
-                icon: '🥗',
+                icon: 'fa-cabbage',
                 category: 'vegetable',
                 idealTempMin: 15,
                 idealTempMax: 28,
@@ -1618,7 +1698,7 @@
                 id: 'letsugas',
                 name: 'Letsugas (Lettuce)',
                 sci: 'Lactuca sativa',
-                icon: '🥬',
+                icon: 'fa-cabbage',
                 category: 'vegetable',
                 idealTempMin: 12,
                 idealTempMax: 24,
@@ -1646,7 +1726,7 @@
                 id: 'pipino',
                 name: 'Pipino (Cucumber)',
                 sci: 'Cucumis sativus',
-                icon: '🥒',
+                icon: 'fa-cucumber',
                 category: 'vegetable',
                 idealTempMin: 20,
                 idealTempMax: 32,
@@ -1674,7 +1754,7 @@
                 id: 'luya',
                 name: 'Luya (Ginger)',
                 sci: 'Zingiber officinale',
-                icon: '🫚',
+                icon: 'fa-seedling',
                 category: 'herb',
                 idealTempMin: 22,
                 idealTempMax: 32,
@@ -1702,7 +1782,7 @@
                 id: 'bawang',
                 name: 'Bawang (Garlic)',
                 sci: 'Allium sativum',
-                icon: '🧄',
+                icon: 'fa-garlic',
                 category: 'herb',
                 idealTempMin: 15,
                 idealTempMax: 28,
@@ -1730,7 +1810,7 @@
                 id: 'sibuyas',
                 name: 'Sibuyas (Onion)',
                 sci: 'Allium cepa',
-                icon: '🧅',
+                icon: 'fa-onion',
                 category: 'herb',
                 idealTempMin: 15,
                 idealTempMax: 28,
@@ -1812,7 +1892,7 @@
             let searchQuery = '';
             let currentPage = 'dashboard';
             let selectedPlantId = null;
-            let gardenPlants = []; // array of { id, plantId, plantingDate, wateredDates, fertilizedDates, harvested: bool, harvestDate? }
+            let gardenPlants = [];
             let modalCallback = null;
 
             // ─── LOCAL STORAGE ──────────────────────────────────────────
@@ -1823,7 +1903,6 @@
                     const data = localStorage.getItem(STORAGE_KEY);
                     if (data) {
                         gardenPlants = JSON.parse(data);
-                        // ensure each entry has wateredDates and fertilizedDates arrays
                         gardenPlants = gardenPlants.map(p => {
                             if (!p.wateredDates) p.wateredDates = [];
                             if (!p.fertilizedDates) p.fertilizedDates = [];
@@ -1840,9 +1919,7 @@
             function saveGarden() {
                 try {
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(gardenPlants));
-                } catch (e) {
-                    console.warn('Failed to save garden:', e);
-                }
+                } catch (e) { console.warn('Save failed:', e); }
             }
 
             // ─── HELPERS ────────────────────────────────────────────────
@@ -1882,7 +1959,7 @@
             }
 
             function showModal(title, desc, confirmText, confirmClass, callback) {
-                modalTitle.textContent = title;
+                modalTitle.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ${title}`;
                 modalDesc.textContent = desc;
                 modalConfirm.textContent = confirmText || 'Confirm';
                 modalConfirm.className = confirmClass || 'btn-danger';
@@ -1905,38 +1982,38 @@
             });
 
             // ─── WEATHER HELPERS ─────────────────────────────────────────
-            function getWeatherEmoji(code) {
+            function getWeatherIcon(code) {
                 const map = {
-                    0: '☀️',
-                    1: '🌤',
-                    2: '⛅',
-                    3: '☁️',
-                    45: '🌫',
-                    48: '🌫',
-                    51: '🌦',
-                    53: '🌦',
-                    55: '🌧',
-                    56: '🌧',
-                    57: '🌧',
-                    61: '🌧',
-                    63: '🌧',
-                    65: '🌧',
-                    66: '🌧',
-                    67: '🌧',
-                    71: '❄️',
-                    73: '❄️',
-                    75: '❄️',
-                    77: '🌨',
-                    80: '🌦',
-                    81: '🌧',
-                    82: '⛈',
-                    85: '🌨',
-                    86: '❄️',
-                    95: '⛈',
-                    96: '⛈',
-                    99: '⛈'
+                    0: 'fa-sun',
+                    1: 'fa-sun',
+                    2: 'fa-cloud-sun',
+                    3: 'fa-cloud',
+                    45: 'fa-smog',
+                    48: 'fa-smog',
+                    51: 'fa-cloud-rain',
+                    53: 'fa-cloud-rain',
+                    55: 'fa-cloud-rain',
+                    56: 'fa-cloud-sleet',
+                    57: 'fa-cloud-sleet',
+                    61: 'fa-cloud-showers-heavy',
+                    63: 'fa-cloud-showers-heavy',
+                    65: 'fa-cloud-showers-heavy',
+                    66: 'fa-cloud-sleet',
+                    67: 'fa-cloud-sleet',
+                    71: 'fa-snowflake',
+                    73: 'fa-snowflake',
+                    75: 'fa-snowflake',
+                    77: 'fa-snowflake',
+                    80: 'fa-cloud-rain',
+                    81: 'fa-cloud-rain',
+                    82: 'fa-cloud-rain',
+                    85: 'fa-cloud-snow',
+                    86: 'fa-cloud-snow',
+                    95: 'fa-cloud-bolt',
+                    96: 'fa-cloud-bolt',
+                    99: 'fa-cloud-bolt'
                 };
-                return map[code] || '🌡️';
+                return map[code] || 'fa-cloud-sun';
             }
 
             function getWeatherDesc(code) {
@@ -2097,13 +2174,14 @@
                 locationProvince.textContent = p;
                 locationCountry.textContent = co;
                 const full = [b, c, p, co].filter(s => s !== '--').join(' · ');
-                sidebarLocation.textContent = full || '📍 Detecting…';
+                sidebarLocation.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${full || 'Detecting…'}`;
             }
 
             // ─── UPDATE DASHBOARD ──────────────────────────────────────
             function updateDashboard() {
                 if (!weatherData) {
-                    topPlantsGrid.innerHTML = `<div class="loading-spinner"><span class="spin">🌿</span><br>Waiting for weather…</div>`;
+                    topPlantsGrid.innerHTML =
+                        `<div class="loading-spinner"><i class="fa-solid fa-seedling spin"></i><br>Waiting for weather…</div>`;
                     return;
                 }
                 const temp = Math.round(weatherData.current.temperature_2m);
@@ -2118,7 +2196,7 @@
                     const matchClass = p.score >= 60 ? 'good' : 'ok';
                     html += `
                         <div class="plant-mini-card" data-id="${p.id}" data-page="plant-detail">
-                            <span class="icon">${p.icon}</span>
+                            <span class="icon"><i class="fa-solid ${p.icon}"></i></span>
                             <div class="name">${p.name}</div>
                             <div class="match ${matchClass}">${p.score}% match</div>
                         </div>
@@ -2133,7 +2211,7 @@
                     });
                 });
 
-                topWeatherIcon.textContent = getWeatherEmoji(code);
+                topWeatherIcon.className = `fa-solid ${getWeatherIcon(code)}`;
                 topTemp.textContent = `${temp}°`;
                 topCond.textContent = getWeatherDesc(code);
                 weatherDesc.textContent = getWeatherDesc(code);
@@ -2146,7 +2224,8 @@
             // ─── RENDER ALL PLANTS ──────────────────────────────────────
             function renderAllPlants() {
                 if (!weatherData) {
-                    allPlantsGrid.innerHTML = `<div class="loading-spinner"><span class="spin">🌿</span><br>Loading plants…</div>`;
+                    allPlantsGrid.innerHTML =
+                        `<div class="loading-spinner"><i class="fa-solid fa-seedling spin"></i><br>Loading plants…</div>`;
                     plantCount.textContent = '0';
                     return;
                 }
@@ -2170,13 +2249,14 @@
                     const matchClass = p.score >= 60 ? 'good' : 'ok';
                     html += `
                         <div class="plant-mini-card" data-id="${p.id}" data-page="plant-detail">
-                            <span class="icon">${p.icon}</span>
+                            <span class="icon"><i class="fa-solid ${p.icon}"></i></span>
                             <div class="name">${p.name}</div>
                             <div class="match ${matchClass}">${p.score}%</div>
                         </div>
                     `;
                 }
-                allPlantsGrid.innerHTML = html || '<div style="opacity:0.5; text-align:center; padding:20px;">No plants match your filter.</div>';
+                allPlantsGrid.innerHTML = html ||
+                '<div style="opacity:0.5; text-align:center; padding:20px;">No plants match your filter.</div>';
                 plantCount.textContent = `${scored.length}`;
 
                 allPlantsGrid.querySelectorAll('.plant-mini-card').forEach(el => {
@@ -2205,44 +2285,44 @@
 
                 let html = `
                     <div class="plant-detail-header">
-                        <div class="icon">${plant.icon}</div>
+                        <div class="icon"><i class="fa-solid ${plant.icon}"></i></div>
                         <div class="name-group">
                             <div class="name">${plant.name}</div>
                             <div class="sci">${plant.sci}</div>
-                            <div class="reason">⭐ ${score}% match · ${reason}</div>
+                            <div class="reason"><i class="fa-solid fa-star"></i> ${score}% match · ${reason}</div>
                         </div>
                     </div>
                     <div class="card">
                         <div class="detail-grid-2">
-                            <div class="item"><div class="label">🌡️ Ideal Temp</div><div class="value">${plant.idealTempMin}–${plant.idealTempMax}°C</div></div>
-                            <div class="item"><div class="label">💧 Ideal Humidity</div><div class="value">${plant.idealHumidityMin}–${plant.idealHumidityMax}%</div></div>
-                            <div class="item"><div class="label">☀️ Sunlight</div><div class="value">${plant.sunlight}</div></div>
-                            <div class="item"><div class="label">🧪 Fertilizer</div><div class="value" style="font-size:12px;">${plant.fertilizer}</div></div>
-                            <div class="item"><div class="label">💧 Water per Day</div><div class="value">${plant.waterPerDay} mL</div></div>
-                            <div class="item"><div class="label">📅 Days to Harvest</div><div class="value">${plant.daysToHarvest} days</div></div>
+                            <div class="item"><div class="label"><i class="fa-solid fa-temperature-high"></i> Ideal Temp</div><div class="value">${plant.idealTempMin}–${plant.idealTempMax}°C</div></div>
+                            <div class="item"><div class="label"><i class="fa-solid fa-droplet"></i> Ideal Humidity</div><div class="value">${plant.idealHumidityMin}–${plant.idealHumidityMax}%</div></div>
+                            <div class="item"><div class="label"><i class="fa-solid fa-sun"></i> Sunlight</div><div class="value">${plant.sunlight}</div></div>
+                            <div class="item"><div class="label"><i class="fa-solid fa-flask"></i> Fertilizer</div><div class="value" style="font-size:12px;">${plant.fertilizer}</div></div>
+                            <div class="item"><div class="label"><i class="fa-solid fa-droplet"></i> Water per Day</div><div class="value">${plant.waterPerDay} mL</div></div>
+                            <div class="item"><div class="label"><i class="fa-solid fa-clock"></i> Days to Harvest</div><div class="value">${plant.daysToHarvest} days</div></div>
                         </div>
                         <div class="detail-section">
-                            <div class="label">🧑‍🌾 Soil</div>
+                            <div class="label"><i class="fa-solid fa-earth-americas"></i> Soil</div>
                             <div class="value">${plant.soil}</div>
                         </div>
                         <div class="detail-section">
-                            <div class="label">📝 Description</div>
+                            <div class="label"><i class="fa-solid fa-pen"></i> Description</div>
                             <div class="value">${plant.description}</div>
                         </div>
                         <div class="detail-section">
-                            <div class="label">🦠 Diseases & Treatment (Sakit & Bulong)</div>
+                            <div class="label"><i class="fa-solid fa-bug"></i> Diseases & Treatment (Sakit & Bulong)</div>
                             <div class="value">
                                 ${plant.diseases.map(d => `<span class="disease-tag">${d.name}</span> ${d.description}<br>`).join('')}
                             </div>
                         </div>
                         <div class="detail-section">
-                            <div class="label">🧑‍🌾 How to Care (Pano e Alaga)</div>
+                            <div class="label"><i class="fa-solid fa-hand-holding-heart"></i> How to Care (Pano e Alaga)</div>
                             <div class="value">
                                 ${plant.care.map(c => `• ${c}<br>`).join('')}
                             </div>
                         </div>
                         <div class="detail-section">
-                            <div class="label">📅 Planting Calendar for ${plant.name}</div>
+                            <div class="label"><i class="fa-solid fa-calendar"></i> Planting Calendar for ${plant.name}</div>
                             <div id="plantCalendarContainer" style="margin-top:6px;">
                                 ${generateCalendar(plant)}
                             </div>
@@ -2263,7 +2343,8 @@
                 const isPlantingMonth = plantingMonths.includes(month + 1);
                 const daysToHarvest = plant.daysToHarvest;
 
-                let html = `<div style="font-size:13px; opacity:0.6; margin-bottom:6px;">${now.toLocaleString('default', { month: 'long' })} ${year}</div>`;
+                let html =
+                    `<div style="font-size:13px; opacity:0.6; margin-bottom:6px;">${now.toLocaleString('default', { month: 'long' })} ${year}</div>`;
                 html += '<div class="calendar-month-grid">';
                 const dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
                 for (const dn of dayNames) html += `<div class="day-name">${dn}</div>`;
@@ -2294,7 +2375,8 @@
             // ─── CALENDAR PAGE ──────────────────────────────────────────
             function renderCalendar() {
                 if (!weatherData) {
-                    calendarContainer.innerHTML = '<div class="loading-spinner"><span class="spin">📅</span><br>Loading calendar…</div>';
+                    calendarContainer.innerHTML =
+                        `<div class="loading-spinner"><i class="fa-solid fa-calendar spin"></i><br>Loading calendar…</div>`;
                     seasonalPlantsList.innerHTML = '';
                     return;
                 }
@@ -2345,7 +2427,8 @@
                 const inSeason = PLANTS.filter(p => p.plantingMonths.includes(month + 1));
                 let listHtml = '';
                 for (const p of inSeason) {
-                    listHtml += `<div class="item"><span class="plant">${p.icon} ${p.name}</span><span class="months">Plant now</span></div>`;
+                    listHtml +=
+                        `<div class="item"><span class="plant"><i class="fa-solid ${p.icon}"></i> ${p.name}</span><span class="months">Plant now</span></div>`;
                 }
                 seasonalPlantsList.innerHTML = listHtml || '<div style="opacity:0.4;">No plants are in season this month.</div>';
             }
@@ -2353,18 +2436,18 @@
             // ─── GARDEN FUNCTIONS ──────────────────────────────────────
             function renderGarden() {
                 if (!weatherData) {
-                    gardenList.innerHTML = '<div class="loading-spinner"><span class="spin">🌿</span><br>Loading weather for garden…</div>';
+                    gardenList.innerHTML =
+                        `<div class="loading-spinner"><i class="fa-solid fa-seedling spin"></i><br>Loading weather for garden…</div>`;
                     gardenCount.textContent = '0 plants';
                     return;
                 }
 
-                // Populate select options
                 const currentSelect = addPlantSelect.value;
                 addPlantSelect.innerHTML = '<option value="">-- Select a plant to add --</option>';
                 for (const p of PLANTS) {
                     const opt = document.createElement('option');
                     opt.value = p.id;
-                    opt.textContent = `${p.icon} ${p.name}`;
+                    opt.textContent = `${p.name}`;
                     addPlantSelect.appendChild(opt);
                 }
                 if (currentSelect) addPlantSelect.value = currentSelect;
@@ -2372,7 +2455,8 @@
                 if (gardenPlants.length === 0) {
                     gardenList.innerHTML = `
                         <div class="empty-garden">
-                            🌱 Your garden is empty.<br>
+                            <i class="fa-solid fa-seedling" style="font-size:32px; display:block; margin-bottom:8px;"></i>
+                            Your garden is empty.<br>
                             Select a plant above and click "Add to Garden" to start tracking!
                         </div>
                     `;
@@ -2380,7 +2464,6 @@
                     return;
                 }
 
-                // Show each plant
                 let html = '';
                 const temp = Math.round(weatherData.current.temperature_2m);
                 const hum = Math.round(weatherData.current.relative_humidity_2m);
@@ -2396,21 +2479,17 @@
                     const progress = Math.min(100, (daysSince / plant.daysToHarvest) * 100);
                     const isHarvested = gPlant.harvested || false;
 
-                    // Water needs: base waterPerDay adjusted by precipitation
                     let waterNeeded = plant.waterPerDay;
                     if (precip > 0) {
-                        // Reduce water by precipitation amount (simple: 1mm rain = 10% reduction)
                         const reduction = Math.min(0.8, precip * 0.2);
                         waterNeeded = Math.round(waterNeeded * (1 - reduction));
                     }
                     waterNeeded = Math.max(0, waterNeeded);
 
-                    // Check if watered today
                     const todayStr = now.toDateString();
                     const wateredToday = gPlant.wateredDates && gPlant.wateredDates.some(d => new Date(d).toDateString() ===
                         todayStr);
-                    // Fertilizer: based on plant.fertilizer frequency (approx every 14 days)
-                    const fertInterval = 14; // days
+                    const fertInterval = 14;
                     const lastFert = gPlant.fertilizedDates && gPlant.fertilizedDates.length > 0 ?
                         new Date(gPlant.fertilizedDates[gPlant.fertilizedDates.length - 1]) :
                         plantingDate;
@@ -2421,14 +2500,14 @@
                         <div class="garden-plant-card" data-garden-id="${gPlant.id}">
                             <div class="row">
                                 <div class="plant-info">
-                                    <span class="icon">${plant.icon}</span>
+                                    <span class="icon"><i class="fa-solid ${plant.icon}"></i></span>
                                     <div>
                                         <div class="name">${plant.name}</div>
-                                        <div class="sub">Planted ${formatDate(gPlant.plantingDate)} · ${daysSince} days ago</div>
+                                        <div class="sub"><i class="fa-regular fa-calendar"></i> Planted ${formatDate(gPlant.plantingDate)} · ${daysSince} days ago</div>
                                     </div>
                                 </div>
                                 <div>
-                                    <span class="status-badge ${isHarvested ? 'harvested' : ''}">${isHarvested ? '🌾 Harvested' : '🌱 Growing'}</span>
+                                    <span class="status-badge ${isHarvested ? 'harvested' : ''}">${isHarvested ? '<i class="fa-solid fa-check"></i> Harvested' : '<i class="fa-solid fa-seedling"></i> Growing'}</span>
                                 </div>
                             </div>
                             ${!isHarvested ? `
@@ -2439,25 +2518,25 @@
                             </div>
                             <div class="checklist">
                                 <span class="item ${wateredToday ? 'done' : ''}">
-                                    <span class="emoji">💧</span> Water ${wateredToday ? '✅' : '❌'} (${waterNeeded} mL)
+                                    <i class="fa-solid fa-droplet icon"></i> Water ${wateredToday ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-solid fa-xmark"></i>'} (${waterNeeded} mL)
                                 </span>
                                 <span class="item ${fertDue ? 'done' : ''}">
-                                    <span class="emoji">🧪</span> Fertilizer ${fertDue ? '✅ due' : '⏳ in ' + (fertInterval - daysSinceFert) + ' days'}
+                                    <i class="fa-solid fa-flask icon"></i> Fertilizer ${fertDue ? '<i class="fa-solid fa-check"></i> due' : '⏳ in ' + (fertInterval - daysSinceFert) + ' days'}
                                 </span>
                                 <span class="item">
-                                    <span class="emoji">🌡️</span> ${temp}°C / ${hum}% humidity
+                                    <i class="fa-solid fa-temperature-high icon"></i> ${temp}°C / ${hum}% humidity
                                 </span>
                             </div>
                             ` : `
-                            <div style="font-size:13px; opacity:0.6;">Harvested on ${formatDate(gPlant.harvestDate)}</div>
+                            <div style="font-size:13px; opacity:0.6;"><i class="fa-regular fa-calendar-check"></i> Harvested on ${formatDate(gPlant.harvestDate)}</div>
                             `}
                             <div class="actions">
                                 ${!isHarvested ? `
-                                <button class="water-btn" data-id="${gPlant.id}">💧 Water</button>
-                                <button class="fertilize-btn" data-id="${gPlant.id}">🧪 Fertilize</button>
-                                <button class="harvest-btn" data-id="${gPlant.id}">🌾 Harvest</button>
+                                <button class="water-btn" data-id="${gPlant.id}"><i class="fa-solid fa-droplet"></i> Water</button>
+                                <button class="fertilize-btn" data-id="${gPlant.id}"><i class="fa-solid fa-flask"></i> Fertilize</button>
+                                <button class="harvest-btn" data-id="${gPlant.id}"><i class="fa-solid fa-scissors"></i> Harvest</button>
                                 ` : ''}
-                                <button class="danger delete-btn" data-id="${gPlant.id}">🗑️ Delete</button>
+                                <button class="danger delete-btn" data-id="${gPlant.id}"><i class="fa-solid fa-trash-can"></i> Delete</button>
                             </div>
                         </div>
                     `;
@@ -2465,7 +2544,6 @@
                 gardenList.innerHTML = html;
                 gardenCount.textContent = `${gardenPlants.length} plants`;
 
-                // Attach event listeners
                 gardenList.querySelectorAll('.water-btn').forEach(btn => {
                     btn.addEventListener('click', function(e) {
                         e.stopPropagation();
@@ -2504,7 +2582,6 @@
                 const plant = PLANTS.find(p => p.id === plantId);
                 if (!plant) return;
 
-                // Check if already in garden (allow duplicates? we can allow, but maybe warn)
                 const now = new Date();
                 const newPlant = {
                     id: Date.now() + '_' + Math.random().toString(36).substr(2, 4),
@@ -2526,7 +2603,6 @@
                 if (!gPlant) return;
                 const now = new Date();
                 const todayStr = now.toDateString();
-                // Check if already watered today
                 if (gPlant.wateredDates.some(d => new Date(d).toDateString() === todayStr)) {
                     showToast('💧 Already watered today!', 1500);
                     return;
@@ -2550,29 +2626,36 @@
             function harvestPlant(gardenId) {
                 const gPlant = gardenPlants.find(p => p.id === gardenId);
                 if (!gPlant) return;
-                showModal('🌾 Harvest Plant',
-                    `Mark "${PLANTS.find(p => p.id === gPlant.plantId)?.name}" as harvested? This will stop tracking growth.`,
-                    'Harvest', 'btn-confirm', function() {
+                const plantName = PLANTS.find(p => p.id === gPlant.plantId)?.name || 'plant';
+                showModal(
+                    'Harvest Plant',
+                    `Mark "${plantName}" as harvested? This will stop tracking growth.`,
+                    'Harvest', 'btn-confirm',
+                    function() {
                         gPlant.harvested = true;
                         gPlant.harvestDate = new Date().toISOString();
                         saveGarden();
                         renderGarden();
                         showToast('🌾 Harvested! Congratulations!', 2000);
-                    });
+                    }
+                );
             }
 
             function deletePlant(gardenId) {
                 const gPlant = gardenPlants.find(p => p.id === gardenId);
                 if (!gPlant) return;
                 const plantName = PLANTS.find(p => p.id === gPlant.plantId)?.name || 'plant';
-                showModal('🗑️ Delete Plant',
+                showModal(
+                    'Delete Plant',
                     `Are you sure you want to delete "${plantName}" from your garden? This action cannot be undone.`,
-                    'Delete', 'btn-danger', function() {
+                    'Delete', 'btn-danger',
+                    function() {
                         gardenPlants = gardenPlants.filter(p => p.id !== gardenId);
                         saveGarden();
                         renderGarden();
                         showToast('🗑️ Plant deleted.', 1500);
-                    });
+                    }
+                );
             }
 
             // ─── REFRESH ──────────────────────────────────────────────────
@@ -2648,10 +2731,10 @@
             // ─── HANDLE REFRESH BUTTON ──────────────────────────────────
             refreshBtn.addEventListener('click', function() {
                 if (isRefreshing) return;
-                this.textContent = '⟳ Refreshing…';
+                this.innerHTML = '<i class="fa-solid fa-rotate fa-spin"></i> Refreshing…';
                 this.disabled = true;
                 refreshWeather(true).finally(() => {
-                    this.textContent = '⟳ Refresh';
+                    this.innerHTML = '<i class="fa-solid fa-rotate"></i> Refresh';
                     this.disabled = false;
                 });
             });
