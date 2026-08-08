@@ -26,9 +26,9 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 260px;
+            width: 280px;
             height: 100%;
-            background: rgba(18, 22, 33, 0.92);
+            background: rgba(18, 22, 33, 0.94);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-right: 1px solid rgba(255, 255, 255, 0.06);
@@ -171,6 +171,9 @@
             font-size: 18px;
             font-weight: 600;
             flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .topbar-weather {
@@ -507,15 +510,15 @@
         @media (min-width: 768px) {
             .sidebar {
                 transform: translateX(0);
-                width: 260px;
+                width: 280px;
             }
             .sidebar-overlay {
                 display: none;
             }
             .main-content {
-                margin-left: 260px;
+                margin-left: 280px;
                 padding: 24px 32px 80px;
-                max-width: calc(100% - 260px);
+                max-width: calc(100% - 280px);
             }
             .hamburger {
                 display: none;
@@ -640,6 +643,21 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* ─── LOCATION DISPLAY ─── */
+        .location-full {
+            font-size: 14px;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+        .location-full .highlight {
+            color: #81c784;
+            font-weight: 500;
+        }
+        .location-full .sep {
+            opacity: 0.3;
+            margin: 0 4px;
+        }
     </style>
 </head>
 <body>
@@ -660,6 +678,9 @@
             <a href="#calendar" data-page="calendar"><span class="icon">📅</span> Planting Calendar</a>
             <a href="#about" data-page="about"><span class="icon">ℹ️</span> About</a>
         </nav>
+        <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.04); font-size: 12px; opacity:0.3;">
+            <span id="sidebarLocation">📍 Detecting…</span>
+        </div>
     </div>
 
     <!-- ─── OVERLAY ─── -->
@@ -686,13 +707,16 @@
                     <span class="card-title">📍 Your Location</span>
                     <span style="font-size:13px; opacity:0.5;" id="updateTime">—</span>
                 </div>
-                <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-                    <span id="locationDisplay" style="font-size:16px; font-weight:500;">Detecting…</span>
+                <div id="locationDisplay" class="location-full">
+                    <span class="highlight" id="locationBarangay">--</span><span class="sep">·</span>
+                    <span id="locationCity">--</span><span class="sep">·</span>
+                    <span id="locationProvince">--</span><span class="sep">·</span>
+                    <span id="locationCountry">--</span>
+                </div>
+                <div style="margin-top:8px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
                     <span style="font-size:14px; opacity:0.6;">
                         <span id="weatherDesc">--</span> · 💧 <span id="humidityDisp">--%</span> · 🌬 <span id="windDisp">-- km/h</span>
                     </span>
-                </div>
-                <div style="margin-top:10px;">
                     <button class="refresh-btn" id="refreshBtn" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.06); color:#fff; padding:6px 18px; border-radius:30px; font-size:13px; cursor:pointer;">⟳ Refresh</button>
                 </div>
                 <div class="error-msg" id="errorMsg" style="background:rgba(244,67,54,0.12); border:1px solid rgba(244,67,54,0.2); border-radius:14px; padding:10px 14px; font-size:13px; color:#ff8a80; margin-top:10px; display:none;">
@@ -1475,7 +1499,10 @@
             const topWeatherIcon = $('topWeatherIcon');
             const topTemp = $('topTemp');
             const topCond = $('topCond');
-            const locationDisplay = $('locationDisplay');
+            const locationBarangay = $('locationBarangay');
+            const locationCity = $('locationCity');
+            const locationProvince = $('locationProvince');
+            const locationCountry = $('locationCountry');
             const weatherDesc = $('weatherDesc');
             const humidityDisp = $('humidityDisp');
             const windDisp = $('windDisp');
@@ -1494,6 +1521,7 @@
             const calendarMonthLabel = $('calendarMonthLabel');
             const seasonalPlantsList = $('seasonalPlantsList');
             const toast = $('toast');
+            const sidebarLocation = $('sidebarLocation');
 
             // ─── STATE ──────────────────────────────────────────────────
             let currentLat = null;
@@ -1619,7 +1647,6 @@
 
             function getReason(plant, temp, humidity) {
                 let reason = plant.reason || '';
-                // Add dynamic details
                 const tempMatch = (temp >= plant.idealTempMin && temp <= plant.idealTempMax) ? 'ideal temperature' :
                     (temp >= plant.idealTempMin - 5 && temp <= plant.idealTempMax + 5) ? 'acceptable temperature' :
                     'temperature may be marginal';
@@ -1634,12 +1661,10 @@
 
             // ─── ROUTING ──────────────────────────────────────────────────
             function navigateTo(page, param) {
-                // Update sidebar active
                 document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
                 const link = document.querySelector(`.sidebar-nav a[data-page="${page}"]`);
                 if (link) link.classList.add('active');
 
-                // Hide all pages
                 document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 
                 if (page === 'plant-detail' && param) {
@@ -1651,7 +1676,6 @@
                 } else {
                     const target = $(`page-${page}`);
                     if (target) target.classList.add('active');
-                    // Set title
                     const titles = {
                         dashboard: 'Dashboard',
                         plants: 'All Plants',
@@ -1664,10 +1688,8 @@
                     if (page === 'calendar') renderCalendar();
                     if (page === 'about') {}
                 }
-                // Close sidebar on mobile
                 if (window.innerWidth < 768) closeSidebarPanel();
                 currentPage = page;
-                // Update hash
                 if (page === 'plant-detail' && param) {
                     window.location.hash = `#plant/${param}`;
                 } else {
@@ -1701,19 +1723,36 @@
                 return data;
             }
 
-            async function fetchLocationName(lat, lon) {
+            // ─── REVERSE GEOCODE (detailed address) ──────────────────────
+            async function fetchLocationDetails(lat, lon) {
                 const url =
-                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&accept-language=en`;
+                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=16&accept-language=en`;
                 const resp = await fetch(url);
                 if (!resp.ok) throw new Error('Geocoding failed');
                 const data = await resp.json();
-                if (data && data.display_name) {
-                    const addr = data.address || {};
-                    const city = addr.city || addr.town || addr.village || addr.municipality || addr.county || '';
-                    const state = addr.state || addr.region || '';
-                    return state ? `${city}, ${state}` : city || `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+                if (data && data.address) {
+                    const addr = data.address;
+                    const barangay = addr.village || addr.hamlet || addr.suburb || addr.neighbourhood || addr.quarter || '';
+                    const city = addr.city || addr.town || addr.municipality || addr.county || '';
+                    const province = addr.state || addr.region || addr.province || '';
+                    const country = addr.country || '';
+                    return { barangay, city, province, country };
                 }
-                return `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+                return { barangay: '', city: '', province: '', country: '' };
+            }
+
+            // ─── UPDATE LOCATION DISPLAY ──────────────────────────────
+            function updateLocationDisplay(details) {
+                const b = details.barangay || '--';
+                const c = details.city || '--';
+                const p = details.province || '--';
+                const co = details.country || '--';
+                locationBarangay.textContent = b;
+                locationCity.textContent = c;
+                locationProvince.textContent = p;
+                locationCountry.textContent = co;
+                const full = [b, c, p, co].filter(s => s !== '--').join(' · ');
+                sidebarLocation.textContent = full || '📍 Detecting…';
             }
 
             // ─── UPDATE DASHBOARD ──────────────────────────────────────
@@ -1725,7 +1764,6 @@
                 const temp = Math.round(weatherData.current.temperature_2m);
                 const hum = Math.round(weatherData.current.relative_humidity_2m);
                 const code = weatherData.current.weather_code;
-                // Get top 5 plants
                 const scored = PLANTS.map(p => ({ ...p, score: scorePlant(p, temp, hum) }));
                 scored.sort((a, b) => b.score - a.score);
                 const top = scored.slice(0, 5);
@@ -1743,7 +1781,6 @@
                 }
                 topPlantsGrid.innerHTML = html;
 
-                // Add click listeners
                 topPlantsGrid.querySelectorAll('.plant-mini-card').forEach(el => {
                     el.addEventListener('click', function() {
                         const id = this.dataset.id;
@@ -1751,11 +1788,10 @@
                     });
                 });
 
-                // Update topbar and location
+                // Update topbar
                 topWeatherIcon.textContent = getWeatherEmoji(code);
                 topTemp.textContent = `${temp}°`;
                 topCond.textContent = getWeatherDesc(code);
-                locationDisplay.textContent = locationNameStr || 'Unknown location';
                 weatherDesc.textContent = getWeatherDesc(code);
                 humidityDisp.textContent = `${hum}%`;
                 windDisp.textContent = `${Math.round(weatherData.current.wind_speed_10m)} km/h`;
@@ -1774,9 +1810,7 @@
                 const hum = Math.round(weatherData.current.relative_humidity_2m);
 
                 let filtered = PLANTS.filter(p => {
-                    // Filter by category
                     if (currentFilter !== 'all' && p.category !== currentFilter) return false;
-                    // Search
                     if (searchQuery) {
                         const q = searchQuery.toLowerCase();
                         return p.name.toLowerCase().includes(q) || p.sci.toLowerCase().includes(q);
@@ -1784,7 +1818,6 @@
                     return true;
                 });
 
-                // Sort by match score
                 const scored = filtered.map(p => ({ ...p, score: scorePlant(p, temp, hum) }));
                 scored.sort((a, b) => b.score - a.score);
 
@@ -1927,20 +1960,16 @@
                 const monthName = now.toLocaleString('default', { month: 'long' });
                 calendarMonthLabel.textContent = `${monthName} ${year}`;
 
-                // Show a general calendar with planting highlights for all plants
                 const firstDay = new Date(year, month, 1).getDay();
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
                 const today = now.getDate();
 
-                // Determine which days are planting/harvest for any plant
                 let plantingDays = new Set();
                 let harvestDays = new Set();
                 for (const plant of PLANTS) {
                     if (plant.plantingMonths.includes(month + 1)) {
-                        // Mark first 15 days as planting (simplified)
                         for (let d = 1; d <= 15; d++) plantingDays.add(d);
                     }
-                    // Harvest: approximate based on daysToHarvest from today
                     const harvestDate = new Date(now);
                     harvestDate.setDate(now.getDate() + plant.daysToHarvest);
                     if (harvestDate.getMonth() === month) {
@@ -1969,7 +1998,6 @@
                         </div>`;
                 calendarContainer.innerHTML = html;
 
-                // Seasonal plants list: plants that are in season this month
                 const inSeason = PLANTS.filter(p => p.plantingMonths.includes(month + 1));
                 let listHtml = '';
                 for (const p of inSeason) {
@@ -1986,28 +2014,19 @@
                     return;
                 }
                 isRefreshing = true;
-                if (showLoading) {
-                    // show loading state on dashboard
-                }
                 try {
                     const data = await fetchWeather(currentLat, currentLon);
                     weatherData = data;
-                    let name = locationNameStr;
-                    if (!name || name === 'Detecting…' || name === 'Location denied') {
-                        try {
-                            name = await fetchLocationName(currentLat, currentLon);
-                        } catch (_) {
-                            name = `${currentLat.toFixed(2)}, ${currentLon.toFixed(2)}`;
-                        }
-                        locationNameStr = name;
-                    }
+                    // Update location details
+                    const details = await fetchLocationDetails(currentLat, currentLon);
+                    updateLocationDisplay(details);
                     // Update all views
                     if (currentPage === 'dashboard') updateDashboard();
                     if (currentPage === 'plants') renderAllPlants();
                     if (currentPage === 'plant-detail' && selectedPlantId) renderPlantDetail(selectedPlantId);
                     if (currentPage === 'calendar') renderCalendar();
                     hideError();
-                    showToast('✅ Weather updated!', 1500);
+                    showToast('✅ Weather & location updated!', 1500);
                 } catch (err) {
                     console.error(err);
                     showError(err.message || 'Failed to load weather.');
@@ -2038,12 +2057,10 @@
                         currentLat = lat;
                         currentLon = lon;
                         try {
-                            const name = await fetchLocationName(lat, lon);
-                            locationNameStr = name;
-                            locationDisplay.textContent = name;
+                            const details = await fetchLocationDetails(lat, lon);
+                            updateLocationDisplay(details);
                         } catch (_) {
-                            locationNameStr = `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
-                            locationDisplay.textContent = locationNameStr;
+                            // fallback
                         }
                         await refreshWeather(false);
                     },
@@ -2104,17 +2121,24 @@
                 }
             });
 
+            // ─── SIDEBAR NAV ────────────────────────────────────────────
+            document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.dataset.page;
+                    if (page === 'plant-detail') return;
+                    navigateTo(page);
+                });
+            });
+
             // ─── INIT ──────────────────────────────────────────────────
             function init() {
-                // Start geolocation
                 getLocation();
-                // Set up auto-refresh every 5 minutes
                 if (autoRefreshInterval) clearInterval(autoRefreshInterval);
                 autoRefreshInterval = setInterval(() => {
                     if (!isRefreshing) refreshWeather(false);
                 }, 300000);
 
-                // Handle initial hash
                 const hash = location.hash.slice(1) || 'dashboard';
                 if (hash.startsWith('plant/')) {
                     const id = hash.split('/')[1];
@@ -2123,7 +2147,6 @@
                     navigateTo(hash);
                 }
 
-                // Online/offline
                 window.addEventListener('online', () => { if (!isRefreshing) refreshWeather(false); });
                 document.addEventListener('visibilitychange', () => {
                     if (!document.hidden && !isRefreshing) refreshWeather(false);
