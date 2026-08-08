@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>🌱 PlantAdvisor · Smart Planting</title>
+    <title>🌱 PlantAdvisor · Smart Planting PH</title>
     <style>
         /* ─── RESET & BASE ─── */
         * {
@@ -17,326 +17,196 @@
             background: #0f1219;
             color: #e8edf5;
             min-height: 100vh;
-            padding: 14px 12px 80px;
-            transition: background 0.8s ease;
-            line-height: 1.5;
-        }
-
-        /* ─── SCROLLBAR ─── */
-        ::-webkit-scrollbar {
-            width: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 10px;
-        }
-
-        /* ─── CONTAINER ─── */
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-        }
-
-        /* ─── HEADER CARD ─── */
-        .header-card {
-            background: rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 28px;
-            padding: 20px 22px 18px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-            margin-bottom: 18px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 28px;
-            padding: 1px;
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent 70%);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
-        }
-
-        .glow-orb {
-            position: absolute;
-            top: -100px;
-            right: -80px;
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(100, 200, 80, 0.25), rgba(50, 150, 50, 0.04));
-            filter: blur(90px);
-            pointer-events: none;
-            transition: background 1.2s ease;
-        }
-
-        .glow-orb-bottom {
-            position: absolute;
-            bottom: -80px;
-            left: -60px;
-            width: 240px;
-            height: 240px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 70% 70%, rgba(80, 180, 255, 0.15), rgba(0, 80, 200, 0.03));
-            filter: blur(80px);
-            pointer-events: none;
-            transition: background 1.2s ease;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .location-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .location-left {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 17px;
-            font-weight: 500;
-        }
-
-        .location-left .icon {
-            font-size: 20px;
-        }
-        .location-left .name {
-            opacity: 0.9;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-        .location-left .name.loading {
-            opacity: 0.5;
-            animation: pulse 1.4s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%,
-            100% {
-                opacity: 0.5;
-            }
-            50% {
-                opacity: 0.9;
-            }
-        }
-
-        .weather-badge {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.06);
-            padding: 4px 14px 4px 10px;
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            font-size: 13px;
-            font-weight: 400;
-        }
-
-        .weather-badge .temp {
-            font-weight: 600;
-            font-size: 16px;
-        }
-        .weather-badge .cond {
-            opacity: 0.7;
-        }
-
-        .weather-row {
-            display: flex;
-            gap: 14px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-
-        .weather-tag {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 13px;
-            opacity: 0.7;
-            background: rgba(255, 255, 255, 0.04);
-            padding: 4px 12px 4px 8px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .weather-tag .val {
-            opacity: 1;
-            font-weight: 500;
-        }
-
-        .status-dot {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #4caf50;
-            margin-right: 4px;
-            animation: blink 2s ease-in-out infinite;
-        }
-        .status-dot.error {
-            background: #f44336;
-            animation: none;
-        }
-
-        @keyframes blink {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.3;
-            }
-        }
-
-        .error-msg {
-            background: rgba(244, 67, 54, 0.12);
-            border: 1px solid rgba(244, 67, 54, 0.2);
-            border-radius: 14px;
-            padding: 10px 14px;
-            font-size: 13px;
-            color: #ff8a80;
-            margin-top: 10px;
-            display: none;
-        }
-        .error-msg.visible {
-            display: block;
-        }
-
-        /* ─── SECTION TITLE ─── */
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 22px 0 14px 4px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .section-title .badge {
-            font-size: 12px;
-            background: rgba(255, 255, 255, 0.06);
-            padding: 2px 12px;
-            border-radius: 30px;
-            font-weight: 400;
-            opacity: 0.6;
-        }
-
-        /* ─── PLANT CARDS ─── */
-        .plant-list {
             display: flex;
             flex-direction: column;
-            gap: 14px;
         }
 
-        .plant-card {
-            background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-radius: 24px;
-            padding: 16px 18px 14px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+        /* ─── SIDEBAR ─── */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 260px;
+            height: 100%;
+            background: rgba(18, 22, 33, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 20px 16px;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: 4px 0 40px rgba(0, 0, 0, 0.5);
         }
 
-        .plant-card:active {
-            transform: scale(0.98);
+        .sidebar.open {
+            transform: translateX(0);
         }
 
-        .plant-card .card-glow {
-            position: absolute;
-            top: -60px;
-            right: -40px;
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, rgba(100, 200, 80, 0.08), transparent 70%);
-            filter: blur(60px);
-            pointer-events: none;
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
 
-        .plant-card-header {
+        .sidebar-header .logo {
+            font-size: 28px;
+        }
+        .sidebar-header .title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+        .sidebar-header .sub {
+            font-size: 11px;
+            opacity: 0.4;
+            display: block;
+            font-weight: 300;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .sidebar-nav a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            padding: 12px 14px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             gap: 14px;
-            position: relative;
-            z-index: 1;
+            font-size: 15px;
+            font-weight: 400;
+            transition: all 0.25s ease;
+            border: 1px solid transparent;
         }
 
-        .plant-icon {
-            font-size: 40px;
-            line-height: 1;
-            width: 52px;
+        .sidebar-nav a:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+        }
+
+        .sidebar-nav a.active {
+            background: rgba(76, 175, 80, 0.12);
+            color: #81c784;
+            border-color: rgba(76, 175, 80, 0.15);
+        }
+
+        .sidebar-nav a .icon {
+            font-size: 20px;
+            width: 28px;
             text-align: center;
-            filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
         }
 
-        .plant-name-group {
-            flex: 1;
+        .sidebar-close {
+            display: none;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+            margin-left: auto;
         }
-        .plant-name-group .name {
+
+        /* ─── OVERLAY ─── */
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .sidebar-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ─── MAIN CONTENT ─── */
+        .main-content {
+            flex: 1;
+            padding: 16px 16px 80px;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* ─── TOP BAR ─── */
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            padding: 6px 0;
+        }
+
+        .hamburger {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 12px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hamburger:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .topbar-title {
             font-size: 18px;
             font-weight: 600;
-            letter-spacing: -0.2px;
+            flex: 1;
         }
-        .plant-name-group .sci-name {
-            font-size: 12px;
-            opacity: 0.4;
-            font-style: italic;
-        }
-        .plant-name-group .match-badge {
-            font-size: 10px;
-            background: rgba(76, 175, 80, 0.2);
-            color: #81c784;
-            padding: 1px 10px;
+
+        .topbar-weather {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 4px 12px 4px 8px;
             border-radius: 30px;
-            display: inline-block;
-            margin-top: 2px;
-            border: 1px solid rgba(76, 175, 80, 0.15);
-        }
-        .plant-name-group .match-badge.low {
-            background: rgba(255, 193, 7, 0.15);
-            color: #ffd54f;
-            border-color: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            white-space: nowrap;
         }
 
-        .plant-details {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        .topbar-weather .temp {
+            font-weight: 600;
+        }
+        .topbar-weather .cond {
+            opacity: 0.6;
+            font-size: 12px;
+        }
+
+        /* ─── PAGE CONTAINER ─── */
+        .page {
             display: none;
-            position: relative;
-            z-index: 1;
-            animation: slideDown 0.3s ease;
+            animation: fadeIn 0.3s ease;
         }
 
-        .plant-details.open {
+        .page.active {
             display: block;
         }
 
-        @keyframes slideDown {
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(-8px);
+                transform: translateY(10px);
             }
             to {
                 opacity: 1;
@@ -344,45 +214,108 @@
             }
         }
 
-        .detail-grid {
+        /* ─── CARDS & ELEMENTS (reused) ─── */
+        .card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 18px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+            margin-bottom: 16px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .plant-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px 12px;
-            margin-bottom: 12px;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
         }
 
-        .detail-item {
+        .plant-mini-card {
             background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 8px 10px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
-        }
-        .detail-item .label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            opacity: 0.4;
-            font-weight: 500;
-        }
-        .detail-item .value {
-            font-size: 14px;
-            font-weight: 500;
-            margin-top: 1px;
-        }
-        .detail-item .value .unit {
-            font-size: 11px;
-            opacity: 0.5;
-            font-weight: 400;
+            border-radius: 16px;
+            padding: 12px 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .detail-full {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 14px;
-            padding: 12px 14px;
-            margin-top: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.03);
+        .plant-mini-card:hover {
+            background: rgba(255, 255, 255, 0.07);
+            transform: translateY(-2px);
         }
-        .detail-full .label {
+
+        .plant-mini-card .icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .plant-mini-card .name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .plant-mini-card .match {
+            font-size: 10px;
+            opacity: 0.5;
+            margin-top: 2px;
+        }
+        .plant-mini-card .match.good {
+            color: #81c784;
+            opacity: 1;
+        }
+        .plant-mini-card .match.ok {
+            color: #ffd54f;
+            opacity: 1;
+        }
+
+        /* ─── PLANT DETAIL ─── */
+        .plant-detail-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        .plant-detail-header .icon {
+            font-size: 56px;
+        }
+        .plant-detail-header .name-group .name {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .plant-detail-header .name-group .sci {
+            font-size: 14px;
+            opacity: 0.4;
+            font-style: italic;
+        }
+        .plant-detail-header .name-group .reason {
+            font-size: 14px;
+            background: rgba(76, 175, 80, 0.08);
+            padding: 4px 14px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 4px;
+            color: #81c784;
+            border: 1px solid rgba(76, 175, 80, 0.1);
+        }
+
+        .detail-section {
+            margin-top: 16px;
+        }
+        .detail-section .label {
             font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -390,13 +323,20 @@
             font-weight: 500;
             margin-bottom: 4px;
         }
-        .detail-full .text {
+        .detail-section .value {
             font-size: 14px;
             line-height: 1.6;
-            opacity: 0.85;
         }
-        .detail-full .text .highlight {
-            color: #81c784;
+        .detail-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .detail-grid-2 .item {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 10px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.03);
         }
 
         .disease-tag {
@@ -410,91 +350,72 @@
             border: 1px solid rgba(244, 67, 54, 0.08);
         }
 
-        /* ─── CALENDAR ─── */
-        .calendar-section {
-            margin-top: 14px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 16px;
-            padding: 14px 14px 10px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
-
-        .calendar-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        .calendar-header .cal-label {
-            font-size: 13px;
-            font-weight: 500;
-            opacity: 0.6;
+        .back-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
+            padding: 6px 0;
+            margin-bottom: 12px;
         }
-        .calendar-header .cal-label .emoji {
-            font-size: 16px;
+        .back-btn:hover {
+            color: #fff;
         }
 
-        .calendar-grid {
+        /* ─── CALENDAR PAGE ─── */
+        .calendar-month-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 3px;
             text-align: center;
+            margin-top: 8px;
         }
-
-        .calendar-grid .day-name {
-            font-size: 9px;
+        .calendar-month-grid .day-name {
+            font-size: 10px;
             text-transform: uppercase;
             opacity: 0.3;
             font-weight: 500;
             padding: 4px 0;
         }
-
-        .calendar-grid .day {
-            font-size: 12px;
-            padding: 5px 0;
+        .calendar-month-grid .day {
+            font-size: 13px;
+            padding: 6px 0;
             border-radius: 30px;
             background: rgba(255, 255, 255, 0.02);
-            transition: all 0.2s ease;
-            font-weight: 400;
-            color: rgba(255, 255, 255, 0.5);
+            transition: all 0.2s;
+            color: rgba(255, 255, 255, 0.4);
         }
-
-        .calendar-grid .day.active {
-            background: rgba(76, 175, 80, 0.2);
+        .calendar-month-grid .day.active {
+            background: rgba(76, 175, 80, 0.15);
             color: #81c784;
-            font-weight: 600;
-            box-shadow: 0 0 20px rgba(76, 175, 80, 0.05);
+            font-weight: 500;
         }
-
-        .calendar-grid .day.planting {
-            background: rgba(255, 193, 7, 0.12);
+        .calendar-month-grid .day.planting {
+            background: rgba(255, 193, 7, 0.1);
             color: #ffd54f;
         }
-
-        .calendar-grid .day.harvest {
-            background: rgba(33, 150, 243, 0.12);
+        .calendar-month-grid .day.harvest {
+            background: rgba(33, 150, 243, 0.1);
             color: #64b5f6;
         }
-
-        .calendar-grid .day.water {
+        .calendar-month-grid .day.water {
             background: rgba(0, 188, 212, 0.08);
             color: #4dd0e1;
         }
-
-        .calendar-grid .day.today {
+        .calendar-month-grid .day.today {
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
         .calendar-legend {
             display: flex;
             gap: 14px;
             flex-wrap: wrap;
             margin-top: 10px;
-            font-size: 10px;
-            opacity: 0.5;
+            font-size: 11px;
+            opacity: 0.6;
         }
         .calendar-legend span {
             display: flex;
@@ -502,10 +423,10 @@
             gap: 4px;
         }
         .calendar-legend .dot {
-            display: inline-block;
             width: 8px;
             height: 8px;
             border-radius: 50%;
+            display: inline-block;
         }
         .dot.green {
             background: #81c784;
@@ -520,158 +441,132 @@
             background: #4dd0e1;
         }
 
-        /* ─── WATER & CARE QUICK ─── */
-        .water-care-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
+        .seasonal-list {
+            margin-top: 12px;
         }
-
-        .water-care-row .pill {
-            background: rgba(255, 255, 255, 0.04);
-            padding: 5px 14px 5px 10px;
-            border-radius: 30px;
-            font-size: 13px;
-            border: 1px solid rgba(255, 255, 255, 0.04);
+        .seasonal-list .item {
             display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .water-care-row .pill .icon {
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             font-size: 14px;
         }
-
-        /* ─── REFRESH BUTTON ─── */
-        .refresh-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            color: #e8edf5;
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 400;
-            backdrop-filter: blur(4px);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 4px;
+        .seasonal-list .item .plant {
+            font-weight: 500;
         }
-
-        .refresh-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .refresh-btn:active {
-            transform: scale(0.96);
-        }
-        .refresh-btn:disabled {
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
-        /* ─── EMPTY / LOADING ─── */
-        .loading-plants {
-            text-align: center;
-            padding: 40px 20px;
+        .seasonal-list .item .months {
             opacity: 0.5;
         }
-        .loading-plants .spinner {
-            display: inline-block;
-            animation: spin 1.2s linear infinite;
-            font-size: 32px;
+
+        /* ─── SEARCH / FILTER ─── */
+        .search-box {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s;
+            margin-bottom: 14px;
+        }
+        .search-box::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+        .search-box:focus {
+            border-color: rgba(76, 175, 80, 0.3);
         }
 
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+        .filter-tabs button {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.5);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-tabs button.active {
+            background: rgba(76, 175, 80, 0.12);
+            color: #81c784;
+            border-color: rgba(76, 175, 80, 0.2);
+        }
+        .filter-tabs button:hover {
+            background: rgba(255, 255, 255, 0.08);
         }
 
         /* ─── RESPONSIVE ─── */
-        @media (max-width: 440px) {
-            .header-card {
-                padding: 16px 16px 14px;
-                border-radius: 22px;
+        @media (min-width: 768px) {
+            .sidebar {
+                transform: translateX(0);
+                width: 260px;
             }
-            .location-left {
-                font-size: 15px;
+            .sidebar-overlay {
+                display: none;
             }
-            .weather-badge {
-                font-size: 12px;
-                padding: 3px 10px 3px 8px;
+            .main-content {
+                margin-left: 260px;
+                padding: 24px 32px 80px;
+                max-width: calc(100% - 260px);
             }
-            .weather-badge .temp {
-                font-size: 14px;
+            .hamburger {
+                display: none;
             }
-            .plant-card {
-                padding: 14px 14px 12px;
-                border-radius: 20px;
-            }
-            .plant-icon {
-                font-size: 34px;
-                width: 44px;
-            }
-            .plant-name-group .name {
-                font-size: 16px;
-            }
-            .detail-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 6px;
-            }
-            .detail-item {
-                padding: 6px 8px;
-            }
-            .detail-item .value {
-                font-size: 13px;
-            }
-            .calendar-grid .day {
-                font-size: 11px;
-                padding: 4px 0;
-            }
-            .section-title {
-                font-size: 16px;
-                margin: 18px 0 10px 2px;
-            }
-            .water-care-row .pill {
-                font-size: 12px;
-                padding: 4px 10px 4px 8px;
+            .sidebar-close {
+                display: none !important;
             }
         }
 
-        @media (max-width: 360px) {
-            .location-row {
-                flex-direction: column;
-                align-items: flex-start;
+        @media (max-width: 767px) {
+            .sidebar {
+                width: 280px;
             }
-            .weather-badge {
-                align-self: flex-start;
+            .sidebar-close {
+                display: block;
             }
-            .detail-grid {
-                grid-template-columns: 1fr 1fr;
+            .plant-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
             }
-            .plant-icon {
-                font-size: 28px;
-                width: 38px;
+            .detail-grid-2 {
+                grid-template-columns: 1fr;
             }
-            .plant-name-group .name {
-                font-size: 14px;
+            .topbar-weather .cond {
+                display: none;
             }
         }
 
-        /* ─── UTILITY ─── */
+        @media (max-width: 400px) {
+            .plant-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .plant-detail-header .icon {
+                font-size: 40px;
+            }
+            .plant-detail-header .name-group .name {
+                font-size: 20px;
+            }
+        }
+
+        /* ─── UTILITIES ─── */
         .hidden {
             display: none !important;
-        }
-        .mt-1 {
-            margin-top: 6px;
         }
         .text-center {
             text-align: center;
         }
+        .mt-1 {
+            margin-top: 8px;
+        }
         .gap-1 {
-            gap: 4px;
+            gap: 6px;
         }
         .flex {
             display: flex;
@@ -682,28 +577,17 @@
         .items-center {
             align-items: center;
         }
-
-        /* ─── CARD EXPAND ICON ─── */
-        .expand-icon {
-            font-size: 18px;
-            opacity: 0.3;
-            transition: transform 0.3s ease;
-            margin-left: auto;
+        .w-full {
+            width: 100%;
         }
-        .plant-card.expanded .expand-icon {
-            transform: rotate(180deg);
+        .op-5 {
+            opacity: 0.5;
         }
-        .plant-card .expand-icon {
-            transform: rotate(0deg);
+        .mb-1 {
+            margin-bottom: 8px;
         }
 
-        .plant-card .click-hint {
-            font-size: 11px;
-            opacity: 0.2;
-            margin-left: 8px;
-        }
-
-        /* ─── TOAST / STATUS ─── */
+        /* ─── TOAST ─── */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -715,10 +599,9 @@
             padding: 10px 22px;
             border-radius: 40px;
             font-size: 13px;
-            font-weight: 400;
             border: 1px solid rgba(255, 255, 255, 0.06);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-            z-index: 999;
+            z-index: 9999;
             opacity: 0;
             transition: opacity 0.4s ease;
             pointer-events: none;
@@ -729,154 +612,509 @@
             pointer-events: auto;
         }
 
-        /* plant card active state for touch */
-        .plant-card.tapped {
-            transform: scale(0.98);
+        /* ─── SCROLLBAR ─── */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+
+        /* ─── LOADING ─── */
+        .loading-spinner {
+            text-align: center;
+            padding: 40px 20px;
+            opacity: 0.5;
+        }
+        .loading-spinner .spin {
+            display: inline-block;
+            animation: spin 1.2s linear infinite;
+            font-size: 32px;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="container" id="app">
+    <!-- ─── SIDEBAR ─── -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="logo">🌱</span>
+            <div>
+                <div class="title">PlantAdvisor</div>
+                <span class="sub">Smart Planting · PH</span>
+            </div>
+            <button class="sidebar-close" id="sidebarClose">✕</button>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="active" data-page="dashboard"><span class="icon">📊</span> Dashboard</a>
+            <a href="#plants" data-page="plants"><span class="icon">🌿</span> All Plants</a>
+            <a href="#calendar" data-page="calendar"><span class="icon">📅</span> Planting Calendar</a>
+            <a href="#about" data-page="about"><span class="icon">ℹ️</span> About</a>
+        </nav>
+    </div>
 
-        <!-- ─── TOAST ─── -->
-        <div class="toast" id="toast"></div>
+    <!-- ─── OVERLAY ─── -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-        <!-- ─── HEADER ─── -->
-        <div class="header-card" id="headerCard">
-            <div class="glow-orb" id="glowOrb"></div>
-            <div class="glow-orb-bottom" id="glowOrbBottom"></div>
-            <div class="header-content">
-                <div class="location-row">
-                    <div class="location-left">
-                        <span class="icon">📍</span>
-                        <span class="name" id="locationName">Detecting…</span>
-                    </div>
-                    <div class="weather-badge" id="weatherBadge">
-                        <span id="weatherIcon">🌤</span>
-                        <span class="temp" id="tempDisplay">--°</span>
-                        <span class="cond" id="condDisplay">Loading</span>
-                    </div>
+    <!-- ─── MAIN CONTENT ─── -->
+    <div class="main-content" id="mainContent">
+        <!-- Top Bar -->
+        <div class="topbar">
+            <button class="hamburger" id="hamburgerBtn">☰</button>
+            <span class="topbar-title" id="pageTitle">Dashboard</span>
+            <div class="topbar-weather">
+                <span id="topWeatherIcon">🌤</span>
+                <span class="temp" id="topTemp">--°</span>
+                <span class="cond" id="topCond">Loading</span>
+            </div>
+        </div>
+
+        <!-- ─── PAGES ─── -->
+        <!-- Dashboard -->
+        <div class="page active" id="page-dashboard">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">📍 Your Location</span>
+                    <span style="font-size:13px; opacity:0.5;" id="updateTime">—</span>
                 </div>
-
-                <div class="weather-row" id="weatherRow">
-                    <span class="weather-tag">💧 <span class="val" id="humidityDisplay">--%</span></span>
-                    <span class="weather-tag">🌬 <span class="val" id="windDisplay">-- km/h</span></span>
-                    <span class="weather-tag">🌡️ Feels <span class="val" id="feelsDisplay">--°</span></span>
-                    <span class="weather-tag">☀️ UV <span class="val" id="uvDisplay">--</span></span>
+                <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                    <span id="locationDisplay" style="font-size:16px; font-weight:500;">Detecting…</span>
+                    <span style="font-size:14px; opacity:0.6;">
+                        <span id="weatherDesc">--</span> · 💧 <span id="humidityDisp">--%</span> · 🌬 <span id="windDisp">-- km/h</span>
+                    </span>
                 </div>
-
-                <div class="error-msg" id="errorMsg">
+                <div style="margin-top:10px;">
+                    <button class="refresh-btn" id="refreshBtn" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.06); color:#fff; padding:6px 18px; border-radius:30px; font-size:13px; cursor:pointer;">⟳ Refresh</button>
+                </div>
+                <div class="error-msg" id="errorMsg" style="background:rgba(244,67,54,0.12); border:1px solid rgba(244,67,54,0.2); border-radius:14px; padding:10px 14px; font-size:13px; color:#ff8a80; margin-top:10px; display:none;">
                     ⚠️ <span id="errorText">Unable to load data.</span>
                 </div>
+            </div>
 
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
-                    <span style="font-size:12px; opacity:0.4;">
-                        <span class="status-dot" id="statusDot"></span>
-                        <span id="statusText">Live</span>
-                        <span style="margin-left:8px;" id="updateTime">—</span>
-                    </span>
-                    <button class="refresh-btn" id="refreshBtn">⟳ Refresh</button>
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🌟 Top Recommendations for You</span>
+                    <span style="font-size:12px; opacity:0.4;">based on current weather &amp; season</span>
+                </div>
+                <div class="plant-grid" id="topPlantsGrid">
+                    <div class="loading-spinner"><span class="spin">🌿</span><br>Analyzing…</div>
+                </div>
+            </div>
+
+            <div class="card" style="background:rgba(255,255,255,0.02);">
+                <div class="card-title" style="font-size:14px; opacity:0.6;">🌾 Why these plants?</div>
+                <div style="font-size:13px; opacity:0.7; line-height:1.6; margin-top:6px;">
+                    Each plant is scored based on your current temperature, humidity, and the current month's planting season.
+                    The higher the match, the better it will thrive in your location right now.
                 </div>
             </div>
         </div>
 
-        <!-- ─── SECTION: RECOMMENDED PLANTS ─── -->
-        <div class="section-title">
-            🌱 Best Plants for Your Location
-            <span class="badge" id="plantCount">0</span>
-        </div>
-
-        <div class="plant-list" id="plantList">
-            <!-- Rendered by JS -->
-            <div class="loading-plants">
-                <span class="spinner">🌿</span>
-                <div style="margin-top:8px;">Analyzing weather &amp; finding best plants…</div>
+        <!-- All Plants -->
+        <div class="page" id="page-plants">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">🌿 All Plants</span>
+                    <span style="font-size:12px; opacity:0.4;" id="plantCount">0</span>
+                </div>
+                <input type="text" class="search-box" id="searchInput" placeholder="Search by name…">
+                <div class="filter-tabs" id="filterTabs">
+                    <button class="active" data-filter="all">All</button>
+                    <button data-filter="grain">Grains</button>
+                    <button data-filter="root">Root Crops</button>
+                    <button data-filter="vegetable">Vegetables</button>
+                    <button data-filter="fruit">Fruits</button>
+                    <button data-filter="herb">Herbs</button>
+                </div>
+                <div class="plant-grid" id="allPlantsGrid">
+                    <!-- rendered by JS -->
+                </div>
             </div>
         </div>
 
-        <!-- ─── FOOTER ─── -->
-        <div style="text-align:center; margin-top:30px; font-size:11px; opacity:0.2; letter-spacing:0.5px;">
-            🌱 PlantAdvisor · real-time recommendations based on your location &amp; weather
+        <!-- Plant Detail (hidden, shown via JS) -->
+        <div class="page" id="page-plant-detail">
+            <button class="back-btn" id="backFromDetail">← Back to Plants</button>
+            <div id="plantDetailContainer">
+                <!-- rendered by JS -->
+            </div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="page" id="page-calendar">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">📅 Planting Calendar</span>
+                    <span style="font-size:12px; opacity:0.4;" id="calendarMonthLabel">Loading…</span>
+                </div>
+                <div id="calendarContainer">
+                    <!-- rendered by JS -->
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title" style="font-size:14px; margin-bottom:8px;">🌱 What to plant this month</div>
+                <div id="seasonalPlantsList" class="seasonal-list">
+                    <!-- rendered by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- About -->
+        <div class="page" id="page-about">
+            <div class="card">
+                <div class="card-title" style="font-size:18px;">ℹ️ About PlantAdvisor PH</div>
+                <div style="margin-top:12px; line-height:1.7; opacity:0.7; font-size:14px;">
+                    <p>PlantAdvisor uses your real-time location and current weather to recommend the best crops to grow in the Philippines.</p>
+                    <p style="margin-top:8px;">It considers temperature, humidity, and the planting season for each crop. The database includes rice, sugarcane, root crops, vegetables, and more — all suited for tropical climates.</p>
+                    <p style="margin-top:8px;">Data is fetched from Open-Meteo for weather and OpenStreetMap for location names.</p>
+                    <p style="margin-top:8px; opacity:0.4; font-size:12px;">Made with ❤️ for Filipino gardeners.</p>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- ─── TOAST ─── -->
+    <div class="toast" id="toast"></div>
 
     <script>
         (function() {
             'use strict';
 
-            // ─── PLANT DATABASE ──────────────────────────────────────────
-            // All fields: name, sci, icon, idealTempMin, idealTempMax, idealHumidityMin, idealHumidityMax,
-            // waterPerDay (mL), sunlight, soil, fertilizer, diseases (array of {name, description}),
-            // care (array of string), plantingMonths (array 1-12), daysToHarvest, description
+            // ─── ENHANCED PLANT DATABASE (PH crops) ────────────────────
             const PLANTS = [{
+                id: 'palay',
+                name: 'Palay (Rice)',
+                sci: 'Oryza sativa',
+                icon: '🌾',
+                category: 'grain',
+                idealTempMin: 22,
+                idealTempMax: 34,
+                idealHumidityMin: 50,
+                idealHumidityMax: 90,
+                waterPerDay: 400,
+                sunlight: 'Full sun',
+                soil: 'Clay loam, water-retentive, pH 5.5-6.5',
+                fertilizer: 'Nitrogen-rich (16-16-16) at planting, then 2 more splits',
+                diseases: [
+                    { name: 'Rice Blast', description: 'Diamond-shaped lesions. Use resistant varieties and avoid excess nitrogen.' },
+                    { name: 'Bacterial Leaf Blight', description: 'Yellowish lesions. Drain fields and apply copper-based bactericide.' }
+                ],
+                care: [
+                    'Keep fields flooded during vegetative stage.',
+                    'Apply fertilizer in 3 splits: basal, tillering, panicle initiation.',
+                    'Control weeds with proper water management.',
+                    'Harvest when 80% of grains are golden brown.'
+                ],
+                plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                daysToHarvest: 120,
+                description: 'Staple food of the Philippines. Thrives in warm, humid conditions with ample water.',
+                reason: 'Rice is perfectly suited for the Philippines\' tropical climate with high rainfall and warm temperatures, making it the top grain crop.'
+            }, {
+                id: 'tubo',
+                name: 'Tubo (Sugarcane)',
+                sci: 'Saccharum officinarum',
+                icon: '🌿',
+                category: 'grain',
+                idealTempMin: 25,
+                idealTempMax: 38,
+                idealHumidityMin: 50,
+                idealHumidityMax: 85,
+                waterPerDay: 500,
+                sunlight: 'Full sun',
+                soil: 'Well-draining loam, pH 6.0-7.5',
+                fertilizer: 'High nitrogen (14-14-14) at planting, then side-dress with urea',
+                diseases: [
+                    { name: 'Smut', description: 'Black whip-like growth. Remove infected stalks and use disease-free setts.' },
+                    { name: 'Red Rot', description: 'Red lesions inside stalks. Avoid waterlogging and use resistant varieties.' }
+                ],
+                care: [
+                    'Plant setts horizontally in furrows.',
+                    'Irrigate regularly, especially during dry spells.',
+                    'Apply nitrogen fertilizer every 6-8 weeks.',
+                    'Harvest after 10-12 months when stalks are mature.'
+                ],
+                plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                daysToHarvest: 330,
+                description: 'Primary source of sugar in the Philippines. Requires a long, warm growing season.',
+                reason: 'Sugarcane thrives in the hot, sunny climate of the Philippines, especially in lowland areas with consistent rainfall.'
+            }, {
+                id: 'kamote',
+                name: 'Kamote (Sweet Potato)',
+                sci: 'Ipomoea batatas',
+                icon: '🍠',
+                category: 'root',
+                idealTempMin: 20,
+                idealTempMax: 32,
+                idealHumidityMin: 40,
+                idealHumidityMax: 85,
+                waterPerDay: 250,
+                sunlight: 'Full sun',
+                soil: 'Well-draining sandy loam, pH 5.5-6.5',
+                fertilizer: 'Low nitrogen, high potassium (5-10-10)',
+                diseases: [
+                    { name: 'Leaf Spot', description: 'Brown spots. Remove infected leaves.' },
+                    { name: 'Root Rot', description: 'Soft, decayed roots. Improve drainage and rotate crops.' }
+                ],
+                care: [
+                    'Plant cuttings (slips) in ridges.',
+                    'Water during dry periods but avoid waterlogging.',
+                    'Harvest when leaves start to yellow (90-120 days).',
+                    'Cure roots for 1-2 weeks in warm, humid place.'
+                ],
+                plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                daysToHarvest: 110,
+                description: 'Versatile root crop, rich in carbohydrates. Grows well in tropical lowlands.',
+                reason: 'Sweet potato is a resilient crop that tolerates a wide range of conditions, making it ideal for the Philippines\' varying microclimates.'
+            }, {
+                id: 'kamotengkahoy',
+                name: 'Kamoteng Kahoy (Cassava)',
+                sci: 'Manihot esculenta',
+                icon: '🌱',
+                category: 'root',
+                idealTempMin: 22,
+                idealTempMax: 35,
+                idealHumidityMin: 40,
+                idealHumidityMax: 85,
+                waterPerDay: 300,
+                sunlight: 'Full sun',
+                soil: 'Well-draining sandy loam, pH 5.5-6.5',
+                fertilizer: 'Balanced NPK (14-14-14) at planting',
+                diseases: [
+                    { name: 'Cassava Mosaic', description: 'Mottled leaves. Use resistant varieties and control whiteflies.' },
+                    { name: 'Root Rot', description: 'Soft, brown roots. Improve drainage and avoid overwatering.' }
+                ],
+                care: [
+                    'Plant stem cuttings 2-3 inches deep.',
+                    'Weed regularly during first 3 months.',
+                    'Harvest 8-12 months after planting.',
+                    'Process soon after harvest to prevent spoilage.'
+                ],
+                plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                daysToHarvest: 300,
+                description: 'Starchy root crop used for food and animal feed. Very drought-tolerant.',
+                reason: 'Cassava is a hardy crop that can grow in poor soils and dry conditions, common in many parts of the Philippines.'
+            }, {
+                id: 'gabi',
+                name: 'Gabi (Taro)',
+                sci: 'Colocasia esculenta',
+                icon: '🍃',
+                category: 'root',
+                idealTempMin: 22,
+                idealTempMax: 32,
+                idealHumidityMin: 50,
+                idealHumidityMax: 90,
+                waterPerDay: 450,
+                sunlight: 'Partial shade to full sun',
+                soil: 'Moist, rich loam or aquatic',
+                fertilizer: 'Balanced NPK (10-10-10) every 2 months',
+                diseases: [
+                    { name: 'Leaf Blight', description: 'Water-soaked spots. Use resistant varieties.' },
+                    { name: 'Root Rot', description: 'Soft corms. Avoid water stagnation.' }
+                ],
+                care: [
+                    'Plant in flooded or moist soil.',
+                    'Apply organic matter as mulch.',
+                    'Harvest when leaves start to yellow (8-10 months).',
+                    'Corms can be stored in cool, dry place.'
+                ],
+                plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                daysToHarvest: 270,
+                description: 'Root crop with edible corms and leaves. Thrives in wet, warm conditions.',
+                reason: 'Gabi is well-suited for the Philippines\' wet, tropical areas, especially in low-lying fields and along rivers.'
+            }, {
+                id: 'ube',
+                name: 'Ube (Purple Yam)',
+                sci: 'Dioscorea alata',
+                icon: '🍠',
+                category: 'root',
+                idealTempMin: 22,
+                idealTempMax: 32,
+                idealHumidityMin: 50,
+                idealHumidityMax: 85,
+                waterPerDay: 350,
+                sunlight: 'Full sun to partial shade',
+                soil: 'Well-draining loam, pH 5.5-6.5',
+                fertilizer: 'Balanced NPK (10-10-10) every 2 months',
+                diseases: [
+                    { name: 'Anthracnose', description: 'Dark lesions on vines. Apply fungicide.' },
+                    { name: 'Root Knot', description: 'Swollen roots. Use nematode-resistant varieties.' }
+                ],
+                care: [
+                    'Plant tuber pieces with buds.',
+                    'Provide trellis for vines to climb.',
+                    'Water regularly, especially during dry spells.',
+                    'Harvest after 8-10 months when vines start to die back.'
+                ],
+                plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                daysToHarvest: 280,
+                description: 'Purple yam, popular for desserts. Prefers warm, humid climate.',
+                reason: 'Ube grows best in the Philippines\' tropical climate with consistent rainfall and warm temperatures, producing vibrant purple tubers.'
+            }, {
+                id: 'mani',
+                name: 'Mani (Peanut)',
+                sci: 'Arachis hypogaea',
+                icon: '🥜',
+                category: 'grain',
+                idealTempMin: 20,
+                idealTempMax: 32,
+                idealHumidityMin: 40,
+                idealHumidityMax: 75,
+                waterPerDay: 200,
+                sunlight: 'Full sun',
+                soil: 'Well-draining sandy loam, pH 5.5-6.5',
+                fertilizer: 'Calcium-rich, low nitrogen (0-10-20)',
+                diseases: [
+                    { name: 'Leaf Spot', description: 'Brown spots. Apply fungicide.' },
+                    { name: 'Rust', description: 'Orange pustules. Use resistant varieties.' }
+                ],
+                care: [
+                    'Plant seeds 2 inches deep, 4-6 inches apart.',
+                    'Water during flowering and peg development.',
+                    'Apply gypsum to supply calcium.',
+                    'Harvest when leaves yellow and pods have mature kernels.'
+                ],
+                plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                daysToHarvest: 90,
+                description: 'Legume rich in oil and protein. Grows well in warm, well-drained soils.',
+                reason: 'Peanuts are a good rotation crop for the Philippines, thriving in warm weather and improving soil nitrogen.'
+            }, {
+                id: 'munggo',
+                name: 'Munggo (Mungbean)',
+                sci: 'Vigna radiata',
+                icon: '🫘',
+                category: 'grain',
+                idealTempMin: 20,
+                idealTempMax: 35,
+                idealHumidityMin: 40,
+                idealHumidityMax: 80,
+                waterPerDay: 180,
+                sunlight: 'Full sun',
+                soil: 'Well-draining loam, pH 6.0-7.0',
+                fertilizer: 'Low nitrogen (0-20-20) at planting',
+                diseases: [
+                    { name: 'Powdery Mildew', description: 'White powdery spots. Apply sulfur.' },
+                    { name: 'Yellow Mosaic', description: 'Yellow patches. Control whiteflies.' }
+                ],
+                care: [
+                    'Plant seeds 1-2 inches deep.',
+                    'Water moderately, avoid waterlogging.',
+                    'Harvest when pods turn brown and rattle.',
+                    'Thresh and dry beans immediately.'
+                ],
+                plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                daysToHarvest: 65,
+                description: 'Fast-growing legume used for sprouts and beans. Suitable for warm climates.',
+                reason: 'Mungbean is a quick-maturing crop that fits well into Philippine cropping systems, tolerating heat and humidity.'
+            }, {
+                id: 'mais',
+                name: 'Mais (Corn)',
+                sci: 'Zea mays',
+                icon: '🌽',
+                category: 'grain',
+                idealTempMin: 22,
+                idealTempMax: 34,
+                idealHumidityMin: 40,
+                idealHumidityMax: 85,
+                waterPerDay: 350,
+                sunlight: 'Full sun',
+                soil: 'Well-draining loam, pH 5.8-6.5',
+                fertilizer: 'High nitrogen (14-14-14) at planting, side-dress at knee-high',
+                diseases: [
+                    { name: 'Corn Rust', description: 'Orange pustules. Apply fungicide.' },
+                    { name: 'Stem Borer', description: 'Wilting and holes in stalks. Use Bt or insecticide.' }
+                ],
+                care: [
+                    'Plant seeds 1-2 inches deep, 8-12 inches apart.',
+                    'Water during tasseling and silking.',
+                    'Apply nitrogen fertilizer in splits.',
+                    'Harvest when husks are dry and kernels are hard.'
+                ],
+                plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                daysToHarvest: 100,
+                description: 'Staple grain used for food and animal feed. Requires warm temperatures and adequate moisture.',
+                reason: 'Corn is a major crop in the Philippines, thriving in the warm, sunny climate and producing high yields with proper management.'
+            }, {
                 id: 'kamatis',
-                name: 'Kamatis',
+                name: 'Kamatis (Tomato)',
                 sci: 'Solanum lycopersicum',
                 icon: '🍅',
+                category: 'vegetable',
                 idealTempMin: 18,
                 idealTempMax: 30,
                 idealHumidityMin: 40,
                 idealHumidityMax: 75,
                 waterPerDay: 250,
-                sunlight: 'Full sun (6-8 hrs)',
+                sunlight: 'Full sun',
                 soil: 'Loamy, well-draining, pH 6.0-6.8',
                 fertilizer: 'Balanced NPK (10-10-10) every 2 weeks',
                 diseases: [
-                    { name: 'Early Blight', description: 'Dark spots on leaves. Remove infected leaves and apply copper-based fungicide.' },
-                    { name: 'Fruit Rot', description: 'Water-soaked spots on fruit. Improve air circulation and avoid overhead watering.' }
+                    { name: 'Early Blight', description: 'Dark spots. Remove infected leaves and apply fungicide.' },
+                    { name: 'Fruit Rot', description: 'Water-soaked spots. Improve air circulation.' }
                 ],
                 care: [
-                    'Water deeply 2-3x per week, keep soil evenly moist.',
-                    'Stake or cage plants for support.',
-                    'Prune lower leaves to improve airflow.',
-                    'Apply mulch to retain moisture.'
+                    'Water deeply 2-3x per week.',
+                    'Stake or cage plants.',
+                    'Prune lower leaves for airflow.',
+                    'Harvest when fully colored.'
                 ],
                 plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 daysToHarvest: 75,
-                description: 'Versatile fruit-vegetable rich in vitamin C. Thrives in warm climates with consistent moisture.'
+                description: 'Popular fruit-vegetable. Warm-weather crop with consistent moisture.',
+                reason: 'Tomatoes grow well in the Philippines\' warm climate, especially during the dry season with adequate irrigation.'
             }, {
                 id: 'sili',
-                name: 'Sili',
+                name: 'Sili (Chili)',
                 sci: 'Capsicum frutescens',
                 icon: '🌶️',
+                category: 'vegetable',
                 idealTempMin: 22,
                 idealTempMax: 35,
                 idealHumidityMin: 40,
                 idealHumidityMax: 80,
                 waterPerDay: 200,
-                sunlight: 'Full sun (6-8 hrs)',
+                sunlight: 'Full sun',
                 soil: 'Sandy loam, well-draining, pH 5.5-7.0',
                 fertilizer: 'High potassium (5-10-10) every 2 weeks',
                 diseases: [
-                    { name: 'Powdery Mildew', description: 'White powdery spots. Apply sulfur-based fungicide.' },
-                    { name: 'Leaf Curl', description: 'Leaves curl and yellow. Control aphids with insecticidal soap.' }
+                    { name: 'Powdery Mildew', description: 'White spots. Apply sulfur.' },
+                    { name: 'Leaf Curl', description: 'Leaves curl and yellow. Control aphids.' }
                 ],
                 care: [
                     'Water when top 2" soil is dry.',
                     'Provide support for heavy fruiting.',
-                    'Harvest fruits when fully colored.',
-                    'Pinch early flowers to encourage bushier growth.'
+                    'Harvest when fully colored.',
+                    'Pinch early flowers for bushier growth.'
                 ],
                 plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 daysToHarvest: 60,
-                description: 'Spicy chili pepper essential in Filipino cuisine. Heat-loving and productive in tropical climates.'
+                description: 'Spicy chili essential in Filipino cuisine. Heat-loving and productive.',
+                reason: 'Chili peppers are a staple in the Philippines, thriving in the hot, sunny weather and adding flavor to many dishes.'
             }, {
                 id: 'talong',
-                name: 'Talong',
+                name: 'Talong (Eggplant)',
                 sci: 'Solanum melongena',
                 icon: '🍆',
+                category: 'vegetable',
                 idealTempMin: 20,
                 idealTempMax: 33,
                 idealHumidityMin: 40,
                 idealHumidityMax: 75,
                 waterPerDay: 300,
-                sunlight: 'Full sun (6-8 hrs)',
+                sunlight: 'Full sun',
                 soil: 'Rich, well-draining loam, pH 6.0-7.0',
                 fertilizer: 'Balanced NPK (10-10-10) every 2 weeks',
                 diseases: [
-                    { name: 'Fruit Borer', description: 'Small holes in fruit. Use neem oil or Bacillus thuringiensis.' },
-                    { name: 'Wilt', description: 'Plants droop and die. Remove infected plants and rotate crops.' }
+                    { name: 'Fruit Borer', description: 'Small holes. Use neem oil or Bt.' },
+                    { name: 'Wilt', description: 'Drooping plants. Remove infected and rotate crops.' }
                 ],
                 care: [
                     'Water deeply and consistently.',
@@ -886,12 +1124,14 @@
                 ],
                 plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 daysToHarvest: 65,
-                description: 'Purple eggplant, a staple in Filipino dishes. Warm-weather crop with high yield.'
+                description: 'Purple eggplant, a staple in Filipino dishes. Warm-weather crop.',
+                reason: 'Eggplant is widely grown in the Philippines, benefiting from the warm temperature and long growing season.'
             }, {
                 id: 'ampalaya',
-                name: 'Ampalaya',
+                name: 'Ampalaya (Bitter Gourd)',
                 sci: 'Momordica charantia',
                 icon: '🥒',
+                category: 'vegetable',
                 idealTempMin: 22,
                 idealTempMax: 34,
                 idealHumidityMin: 50,
@@ -901,60 +1141,64 @@
                 soil: 'Well-draining loam, pH 5.5-6.5',
                 fertilizer: 'Balanced NPK (10-10-10) monthly',
                 diseases: [
-                    { name: 'Mosaic Virus', description: 'Yellow-green mottling. Control aphids and remove infected plants.' },
-                    { name: 'Downy Mildew', description: 'Yellow spots on leaves. Improve air circulation and apply fungicide.' }
+                    { name: 'Mosaic Virus', description: 'Yellow-green mottling. Control aphids.' },
+                    { name: 'Downy Mildew', description: 'Yellow spots. Improve air circulation.' }
                 ],
                 care: [
                     'Water regularly, especially during fruiting.',
-                    'Provide trellis for vines to climb.',
+                    'Provide trellis for vines.',
                     'Harvest when fruit is still green and firm.',
-                    'Prune excessive vines to focus energy on fruiting.'
+                    'Prune excessive vines.'
                 ],
                 plantingMonths: [2, 3, 4, 5, 6, 7, 8, 9],
                 daysToHarvest: 60,
-                description: 'Bitter gourd, known for its health benefits. Thrives in hot, humid conditions.'
+                description: 'Bitter gourd, known for health benefits. Thrives in hot, humid conditions.',
+                reason: 'Ampalaya is a popular vegetable in the Philippines, well-adapted to the hot and humid climate, and is valued for its medicinal properties.'
             }, {
                 id: 'okra',
                 name: 'Okra',
                 sci: 'Abelmoschus esculentus',
                 icon: '🫛',
+                category: 'vegetable',
                 idealTempMin: 23,
                 idealTempMax: 35,
                 idealHumidityMin: 45,
                 idealHumidityMax: 85,
                 waterPerDay: 280,
-                sunlight: 'Full sun (6-8 hrs)',
+                sunlight: 'Full sun',
                 soil: 'Well-draining sandy loam, pH 6.0-6.8',
                 fertilizer: 'Balanced NPK (10-10-10) every 3 weeks',
                 diseases: [
-                    { name: 'Yellow Vein Mosaic', description: 'Yellow veins on leaves. Control whiteflies with neem oil.' },
-                    { name: 'Fusarium Wilt', description: 'Yellowing and wilting. Use disease-resistant varieties.' }
+                    { name: 'Yellow Vein Mosaic', description: 'Yellow veins. Control whiteflies.' },
+                    { name: 'Fusarium Wilt', description: 'Yellowing and wilting. Use resistant varieties.' }
                 ],
                 care: [
-                    'Water deeply once a week, more in dry spells.',
+                    'Water deeply once a week.',
                     'Harvest pods when young and tender (2-3 days after flowering).',
                     'Mulch to suppress weeds.',
                     'Space plants 12-18" apart.'
                 ],
                 plantingMonths: [2, 3, 4, 5, 6, 7, 8, 9],
                 daysToHarvest: 55,
-                description: 'Heat-loving vegetable rich in fiber and vitamins. Produces pods throughout summer.'
+                description: 'Heat-loving vegetable rich in fiber. Produces pods throughout summer.',
+                reason: 'Okra is a heat-tolerant vegetable that does well in the Philippines\' dry season, producing abundant pods with minimal care.'
             }, {
                 id: 'sitaw',
-                name: 'Sitaw',
+                name: 'Sitaw (Long Bean)',
                 sci: 'Vigna unguiculata',
                 icon: '🫘',
+                category: 'vegetable',
                 idealTempMin: 20,
                 idealTempMax: 35,
                 idealHumidityMin: 40,
                 idealHumidityMax: 80,
                 waterPerDay: 200,
-                sunlight: 'Full sun (6-8 hrs)',
+                sunlight: 'Full sun',
                 soil: 'Well-draining loam, pH 6.0-6.5',
                 fertilizer: 'Low nitrogen (5-10-10) at planting',
                 diseases: [
-                    { name: 'Bean Rust', description: 'Brown spots on leaves. Apply sulfur-based fungicide.' },
-                    { name: 'Aphids', description: 'Sticky residue and curled leaves. Use insecticidal soap.' }
+                    { name: 'Bean Rust', description: 'Brown spots. Apply sulfur.' },
+                    { name: 'Aphids', description: 'Sticky residue. Use insecticidal soap.' }
                 ],
                 care: [
                     'Water deeply once a week.',
@@ -964,38 +1208,42 @@
                 ],
                 plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 daysToHarvest: 50,
-                description: 'Long bean, a staple in Filipino stir-fries. Fast-growing and productive in warm weather.'
+                description: 'Long bean, a staple in Filipino stir-fries. Fast-growing and productive.',
+                reason: 'Sitaw is a fast-growing vegetable that thrives in warm weather, making it a common backyard crop in the Philippines.'
             }, {
                 id: 'kalabasa',
-                name: 'Kalabasa',
+                name: 'Kalabasa (Squash)',
                 sci: 'Cucurbita maxima',
                 icon: '🎃',
+                category: 'vegetable',
                 idealTempMin: 20,
                 idealTempMax: 32,
                 idealHumidityMin: 40,
                 idealHumidityMax: 80,
                 waterPerDay: 400,
-                sunlight: 'Full sun (6-8 hrs)',
+                sunlight: 'Full sun',
                 soil: 'Rich, well-draining loam, pH 6.0-6.8',
                 fertilizer: 'Balanced NPK (10-10-10) every 3 weeks',
                 diseases: [
-                    { name: 'Powdery Mildew', description: 'White powdery spots. Apply sulfur fungicide.' },
-                    { name: 'Squash Vine Borer', description: 'Wilting vines. Use Bt and remove affected vines.' }
+                    { name: 'Powdery Mildew', description: 'White spots. Apply sulfur.' },
+                    { name: 'Squash Vine Borer', description: 'Wilting vines. Use Bt.' }
                 ],
                 care: [
-                    'Water deeply at base to avoid wetting leaves.',
-                    'Provide ample space for vines to spread.',
+                    'Water deeply at base.',
+                    'Provide ample space for vines.',
                     'Harvest when rind is hard and color is deep.',
-                    'Mulch to retain soil moisture.'
+                    'Mulch to retain moisture.'
                 ],
                 plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 daysToHarvest: 90,
-                description: 'Squash, versatile for soups and desserts. Warm-weather crop with large fruits.'
+                description: 'Squash, versatile for soups and desserts. Warm-weather crop.',
+                reason: 'Kalabasa is a hardy vegetable that grows well in the Philippines\' tropical climate, producing large fruits with minimal inputs.'
             }, {
                 id: 'kangkong',
-                name: 'Kangkong',
+                name: 'Kangkong (Water Spinach)',
                 sci: 'Ipomoea aquatica',
                 icon: '🌿',
+                category: 'vegetable',
                 idealTempMin: 20,
                 idealTempMax: 35,
                 idealHumidityMin: 50,
@@ -1005,7 +1253,7 @@
                 soil: 'Moist, rich soil or aquatic',
                 fertilizer: 'High nitrogen (15-5-5) every 2 weeks',
                 diseases: [
-                    { name: 'Leaf Spot', description: 'Brown spots on leaves. Remove infected leaves.' },
+                    { name: 'Leaf Spot', description: 'Brown spots. Remove infected leaves.' },
                     { name: 'Root Rot', description: 'Wilting and yellowing. Improve drainage.' }
                 ],
                 care: [
@@ -1016,12 +1264,14 @@
                 ],
                 plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                 daysToHarvest: 30,
-                description: 'Water spinach, a semi-aquatic vegetable. Thrives in wet conditions and warm weather.'
+                description: 'Water spinach, a semi-aquatic vegetable. Thrives in wet, warm conditions.',
+                reason: 'Kangkong is a staple in the Philippines, especially in areas with abundant water, and grows rapidly in the warm climate.'
             }, {
                 id: 'pechay',
-                name: 'Pechay',
+                name: 'Pechay (Bok Choy)',
                 sci: 'Brassica rapa subsp. chinensis',
                 icon: '🥬',
+                category: 'vegetable',
                 idealTempMin: 15,
                 idealTempMax: 28,
                 idealHumidityMin: 40,
@@ -1031,23 +1281,25 @@
                 soil: 'Well-draining loam, pH 6.0-6.5',
                 fertilizer: 'Balanced NPK (10-10-10) every 2 weeks',
                 diseases: [
-                    { name: 'Damping Off', description: 'Seedlings collapse. Use sterile soil and avoid overwatering.' },
-                    { name: 'Leaf Blight', description: 'Brown spots on leaves. Apply fungicide and remove affected leaves.' }
+                    { name: 'Damping Off', description: 'Seedlings collapse. Use sterile soil.' },
+                    { name: 'Leaf Blight', description: 'Brown spots. Apply fungicide.' }
                 ],
                 care: [
-                    'Water regularly to keep soil moist but not soggy.',
+                    'Water regularly to keep soil moist.',
                     'Harvest leaves when young and tender.',
                     'Apply side dressing of nitrogen-rich fertilizer.',
                     'Plant in cool season for best quality.'
                 ],
                 plantingMonths: [1, 2, 9, 10, 11, 12],
                 daysToHarvest: 35,
-                description: 'Bok choy, a fast-growing leafy green. Prefers cooler weather but can grow in warm with care.'
+                description: 'Bok choy, a fast-growing leafy green. Prefers cooler weather.',
+                reason: 'Pechay is a quick-growing vegetable that can be planted during the cooler months in the Philippines, providing fresh greens.'
             }, {
                 id: 'mustasa',
-                name: 'Mustasa',
+                name: 'Mustasa (Mustard)',
                 sci: 'Brassica juncea',
                 icon: '🥗',
+                category: 'vegetable',
                 idealTempMin: 15,
                 idealTempMax: 28,
                 idealHumidityMin: 40,
@@ -1057,127 +1309,25 @@
                 soil: 'Well-draining loam, pH 6.0-6.8',
                 fertilizer: 'Balanced NPK (10-10-10) every 2 weeks',
                 diseases: [
-                    { name: 'Downy Mildew', description: 'Yellow spots on leaves. Improve air circulation.' },
+                    { name: 'Downy Mildew', description: 'Yellow spots. Improve air circulation.' },
                     { name: 'Aphids', description: 'Sticky residue. Use insecticidal soap.' }
                 ],
                 care: [
                     'Water consistently to prevent bitterness.',
-                    'Harvest leaves when young for best flavor.',
+                    'Harvest leaves when young.',
                     'Sow seeds directly in garden.',
                     'Thin seedlings to 4-6" apart.'
                 ],
                 plantingMonths: [1, 2, 9, 10, 11, 12],
                 daysToHarvest: 30,
-                description: 'Mustard greens, fast-growing and peppery. Best in cool weather but adaptable.'
-            }, {
-                id: 'luya',
-                name: 'Luya',
-                sci: 'Zingiber officinale',
-                icon: '🫚',
-                idealTempMin: 22,
-                idealTempMax: 32,
-                idealHumidityMin: 50,
-                idealHumidityMax: 85,
-                waterPerDay: 200,
-                sunlight: 'Partial shade to full sun',
-                soil: 'Rich, well-draining loam, pH 5.5-6.5',
-                fertilizer: 'Organic compost, low nitrogen',
-                diseases: [
-                    { name: 'Bacterial Wilt', description: 'Yellowing and wilting. Remove infected plants.' },
-                    { name: 'Rhizome Rot', description: 'Soft, mushy rhizomes. Improve drainage and avoid overwatering.' }
-                ],
-                care: [
-                    'Water regularly but avoid waterlogging.',
-                    'Mulch heavily to retain moisture.',
-                    'Harvest after 8-10 months when leaves yellow.',
-                    'Apply compost as side dressing.'
-                ],
-                plantingMonths: [2, 3, 4, 5, 6, 7],
-                daysToHarvest: 270,
-                description: 'Ginger, a tropical rhizome used in cooking and medicine. Requires warm, humid conditions.'
-            }, {
-                id: 'bawang',
-                name: 'Bawang',
-                sci: 'Allium sativum',
-                icon: '🧄',
-                idealTempMin: 15,
-                idealTempMax: 28,
-                idealHumidityMin: 35,
-                idealHumidityMax: 70,
-                waterPerDay: 150,
-                sunlight: 'Full sun (6-8 hrs)',
-                soil: 'Well-draining sandy loam, pH 6.0-7.0',
-                fertilizer: 'Balanced NPK (10-10-10) at planting',
-                diseases: [
-                    { name: 'White Rot', description: 'White fluffy growth on bulbs. Avoid planting in infected soil.' },
-                    { name: 'Rust', description: 'Orange spots on leaves. Apply fungicide.' }
-                ],
-                care: [
-                    'Water moderately, reduce before harvest.',
-                    'Plant cloves point up, 2" deep.',
-                    'Harvest when lower leaves turn brown.',
-                    'Cure bulbs in dry, airy place.'
-                ],
-                plantingMonths: [1, 2, 3, 9, 10, 11, 12],
-                daysToHarvest: 120,
-                description: 'Garlic, essential in cooking. Grows best in cool weather with well-draining soil.'
-            }, {
-                id: 'sibuyas',
-                name: 'Sibuyas',
-                sci: 'Allium cepa',
-                icon: '🧅',
-                idealTempMin: 15,
-                idealTempMax: 28,
-                idealHumidityMin: 35,
-                idealHumidityMax: 70,
-                waterPerDay: 180,
-                sunlight: 'Full sun (6-8 hrs)',
-                soil: 'Well-draining sandy loam, pH 6.0-6.8',
-                fertilizer: 'Balanced NPK (10-10-10) every 3 weeks',
-                diseases: [
-                    { name: 'Downy Mildew', description: 'Yellow spots. Improve air circulation.' },
-                    { name: 'Bulb Rot', description: 'Soft, rotting bulbs. Avoid overwatering.' }
-                ],
-                care: [
-                    'Water deeply but infrequently.',
-                    'Harvest when tops fall over and turn brown.',
-                    'Cure bulbs in dry, shaded place.',
-                    'Plant in raised beds for better drainage.'
-                ],
-                plantingMonths: [1, 2, 3, 9, 10, 11, 12],
-                daysToHarvest: 100,
-                description: 'Onion, a kitchen staple. Requires cool weather for bulb formation.'
-            }, {
-                id: 'pipino',
-                name: 'Pipino',
-                sci: 'Cucumis sativus',
-                icon: '🥒',
-                idealTempMin: 20,
-                idealTempMax: 32,
-                idealHumidityMin: 40,
-                idealHumidityMax: 80,
-                waterPerDay: 350,
-                sunlight: 'Full sun (6-8 hrs)',
-                soil: 'Rich, well-draining loam, pH 6.0-6.8',
-                fertilizer: 'Balanced NPK (10-10-10) every 2 weeks',
-                diseases: [
-                    { name: 'Downy Mildew', description: 'Yellow spots on leaves. Apply fungicide.' },
-                    { name: 'Powdery Mildew', description: 'White powdery spots. Improve air circulation.' }
-                ],
-                care: [
-                    'Water consistently to keep soil moist.',
-                    'Provide trellis for climbing varieties.',
-                    'Harvest when fruits are firm and green.',
-                    'Mulch to retain moisture.'
-                ],
-                plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-                daysToHarvest: 50,
-                description: 'Cucumber, refreshing and crisp. Warm-weather crop with high water content.'
+                description: 'Mustard greens, fast-growing and peppery. Best in cool weather.',
+                reason: 'Mustasa is a leafy green that grows well in the Philippines during the cooler dry season, providing a spicy addition to meals.'
             }, {
                 id: 'letsugas',
-                name: 'Letsugas',
+                name: 'Letsugas (Lettuce)',
                 sci: 'Lactuca sativa',
                 icon: '🥬',
+                category: 'vegetable',
                 idealTempMin: 12,
                 idealTempMax: 24,
                 idealHumidityMin: 35,
@@ -1188,7 +1338,7 @@
                 fertilizer: 'Balanced NPK (10-10-10) every 2 weeks',
                 diseases: [
                     { name: 'Downy Mildew', description: 'Yellow spots. Avoid overhead watering.' },
-                    { name: 'Tip Burn', description: 'Brown edges on leaves. Maintain consistent moisture.' }
+                    { name: 'Tip Burn', description: 'Brown edges. Maintain consistent moisture.' }
                 ],
                 care: [
                     'Water regularly to keep soil moist.',
@@ -1198,30 +1348,151 @@
                 ],
                 plantingMonths: [1, 2, 3, 9, 10, 11, 12],
                 daysToHarvest: 45,
-                description: 'Lettuce, a cool-season leafy green. Best in mild weather with consistent moisture.'
+                description: 'Lettuce, a cool-season leafy green. Best in mild weather.',
+                reason: 'Lettuce is best grown in the Philippines during the cooler months, as it bolts in high heat. Suitable for upland areas.'
+            }, {
+                id: 'pipino',
+                name: 'Pipino (Cucumber)',
+                sci: 'Cucumis sativus',
+                icon: '🥒',
+                category: 'vegetable',
+                idealTempMin: 20,
+                idealTempMax: 32,
+                idealHumidityMin: 40,
+                idealHumidityMax: 80,
+                waterPerDay: 350,
+                sunlight: 'Full sun',
+                soil: 'Rich, well-draining loam, pH 6.0-6.8',
+                fertilizer: 'Balanced NPK (10-10-10) every 2 weeks',
+                diseases: [
+                    { name: 'Downy Mildew', description: 'Yellow spots. Apply fungicide.' },
+                    { name: 'Powdery Mildew', description: 'White spots. Improve air circulation.' }
+                ],
+                care: [
+                    'Water consistently to keep soil moist.',
+                    'Provide trellis for climbing varieties.',
+                    'Harvest when fruits are firm and green.',
+                    'Mulch to retain moisture.'
+                ],
+                plantingMonths: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                daysToHarvest: 50,
+                description: 'Cucumber, refreshing and crisp. Warm-weather crop with high water content.',
+                reason: 'Cucumbers are well-suited to the Philippines\' warm, humid climate, especially during the rainy season when water is abundant.'
+            }, {
+                id: 'luya',
+                name: 'Luya (Ginger)',
+                sci: 'Zingiber officinale',
+                icon: '🫚',
+                category: 'herb',
+                idealTempMin: 22,
+                idealTempMax: 32,
+                idealHumidityMin: 50,
+                idealHumidityMax: 85,
+                waterPerDay: 200,
+                sunlight: 'Partial shade to full sun',
+                soil: 'Rich, well-draining loam, pH 5.5-6.5',
+                fertilizer: 'Organic compost, low nitrogen',
+                diseases: [
+                    { name: 'Bacterial Wilt', description: 'Yellowing and wilting. Remove infected plants.' },
+                    { name: 'Rhizome Rot', description: 'Soft rhizomes. Improve drainage.' }
+                ],
+                care: [
+                    'Water regularly but avoid waterlogging.',
+                    'Mulch heavily to retain moisture.',
+                    'Harvest after 8-10 months when leaves yellow.',
+                    'Apply compost as side dressing.'
+                ],
+                plantingMonths: [2, 3, 4, 5, 6, 7],
+                daysToHarvest: 270,
+                description: 'Ginger, a tropical rhizome used in cooking and medicine.',
+                reason: 'Ginger thrives in the warm, humid conditions of the Philippines, especially during the rainy season, producing high-quality rhizomes.'
+            }, {
+                id: 'bawang',
+                name: 'Bawang (Garlic)',
+                sci: 'Allium sativum',
+                icon: '🧄',
+                category: 'herb',
+                idealTempMin: 15,
+                idealTempMax: 28,
+                idealHumidityMin: 35,
+                idealHumidityMax: 70,
+                waterPerDay: 150,
+                sunlight: 'Full sun',
+                soil: 'Well-draining sandy loam, pH 6.0-7.0',
+                fertilizer: 'Balanced NPK (10-10-10) at planting',
+                diseases: [
+                    { name: 'White Rot', description: 'White fluffy growth on bulbs. Avoid planting in infected soil.' },
+                    { name: 'Rust', description: 'Orange spots. Apply fungicide.' }
+                ],
+                care: [
+                    'Water moderately, reduce before harvest.',
+                    'Plant cloves point up, 2" deep.',
+                    'Harvest when lower leaves turn brown.',
+                    'Cure bulbs in dry, airy place.'
+                ],
+                plantingMonths: [1, 2, 3, 9, 10, 11, 12],
+                daysToHarvest: 120,
+                description: 'Garlic, essential in cooking. Grows best in cool weather with well-draining soil.',
+                reason: 'Garlic is best planted in the Philippines during the cooler months, producing larger bulbs with proper curing.'
+            }, {
+                id: 'sibuyas',
+                name: 'Sibuyas (Onion)',
+                sci: 'Allium cepa',
+                icon: '🧅',
+                category: 'herb',
+                idealTempMin: 15,
+                idealTempMax: 28,
+                idealHumidityMin: 35,
+                idealHumidityMax: 70,
+                waterPerDay: 180,
+                sunlight: 'Full sun',
+                soil: 'Well-draining sandy loam, pH 6.0-6.8',
+                fertilizer: 'Balanced NPK (10-10-10) every 3 weeks',
+                diseases: [
+                    { name: 'Downy Mildew', description: 'Yellow spots. Improve air circulation.' },
+                    { name: 'Bulb Rot', description: 'Soft bulbs. Avoid overwatering.' }
+                ],
+                care: [
+                    'Water deeply but infrequently.',
+                    'Harvest when tops fall over and turn brown.',
+                    'Cure bulbs in dry, shaded place.',
+                    'Plant in raised beds for better drainage.'
+                ],
+                plantingMonths: [1, 2, 3, 9, 10, 11, 12],
+                daysToHarvest: 100,
+                description: 'Onion, a kitchen staple. Requires cool weather for bulb formation.',
+                reason: 'Onions are a cool-season crop in the Philippines, best planted during the dry season to develop firm bulbs.'
             }];
 
             // ─── DOM REFS ──────────────────────────────────────────────
             const $ = (id) => document.getElementById(id);
-            const locationName = $('locationName');
-            const tempDisplay = $('tempDisplay');
-            const condDisplay = $('condDisplay');
-            const weatherIcon = $('weatherIcon');
-            const humidityDisplay = $('humidityDisplay');
-            const windDisplay = $('windDisplay');
-            const feelsDisplay = $('feelsDisplay');
-            const uvDisplay = $('uvDisplay');
+            const sidebar = $('sidebar');
+            const overlay = $('sidebarOverlay');
+            const hamburger = $('hamburgerBtn');
+            const closeSidebar = $('sidebarClose');
+            const mainContent = $('mainContent');
+            const pageTitle = $('pageTitle');
+            const topWeatherIcon = $('topWeatherIcon');
+            const topTemp = $('topTemp');
+            const topCond = $('topCond');
+            const locationDisplay = $('locationDisplay');
+            const weatherDesc = $('weatherDesc');
+            const humidityDisp = $('humidityDisp');
+            const windDisp = $('windDisp');
             const updateTime = $('updateTime');
+            const refreshBtn = $('refreshBtn');
             const errorMsg = $('errorMsg');
             const errorText = $('errorText');
-            const statusDot = $('statusDot');
-            const statusText = $('statusText');
-            const refreshBtn = $('refreshBtn');
-            const plantList = $('plantList');
+            const topPlantsGrid = $('topPlantsGrid');
+            const allPlantsGrid = $('allPlantsGrid');
             const plantCount = $('plantCount');
-            const glowOrb = $('glowOrb');
-            const glowOrbBottom = $('glowOrbBottom');
-            const headerCard = $('headerCard');
+            const searchInput = $('searchInput');
+            const filterTabs = $('filterTabs');
+            const plantDetailContainer = $('plantDetailContainer');
+            const backFromDetail = $('backFromDetail');
+            const calendarContainer = $('calendarContainer');
+            const calendarMonthLabel = $('calendarMonthLabel');
+            const seasonalPlantsList = $('seasonalPlantsList');
             const toast = $('toast');
 
             // ─── STATE ──────────────────────────────────────────────────
@@ -1232,8 +1503,10 @@
             let isRefreshing = false;
             let geoWatchId = null;
             let autoRefreshInterval = null;
-            let toastTimeout = null;
-            let expandedPlantId = null;
+            let currentFilter = 'all';
+            let searchQuery = '';
+            let currentPage = 'dashboard';
+            let selectedPlantId = null;
 
             // ─── HELPERS ────────────────────────────────────────────────
             function formatTime(ts) {
@@ -1243,36 +1516,23 @@
 
             function showError(msg) {
                 errorText.textContent = msg || 'Something went wrong.';
-                errorMsg.classList.add('visible');
-                statusDot.className = 'status-dot error';
-                statusText.textContent = 'Error';
+                errorMsg.style.display = 'block';
             }
 
             function hideError() {
-                errorMsg.classList.remove('visible');
-                statusDot.className = 'status-dot';
-                statusText.textContent = 'Live';
-            }
-
-            function setLoading(isLoading) {
-                if (isLoading) {
-                    locationName.classList.add('loading');
-                    if (!locationNameStr) locationName.textContent = 'Detecting…';
-                } else {
-                    locationName.classList.remove('loading');
-                }
+                errorMsg.style.display = 'none';
             }
 
             function showToast(msg, duration = 2500) {
                 toast.textContent = msg;
                 toast.classList.add('visible');
-                if (toastTimeout) clearTimeout(toastTimeout);
-                toastTimeout = setTimeout(() => {
+                if (window.toastTimeout) clearTimeout(window.toastTimeout);
+                window.toastTimeout = setTimeout(() => {
                     toast.classList.remove('visible');
                 }, duration);
             }
 
-            // ─── WEATHER CODE → EMOJI ──────────────────────────────────
+            // ─── WEATHER HELPERS ─────────────────────────────────────────
             function getWeatherEmoji(code) {
                 const map = {
                     0: '☀️',
@@ -1341,46 +1601,94 @@
                 return map[code] || 'Unknown';
             }
 
-            // ─── UPDATE GLOW ────────────────────────────────────────────
-            function updateGlow(weatherCode, temp) {
-                let hue, sat, light;
-                if (weatherCode === 0 || weatherCode === 1) {
-                    hue = 40 + Math.min(20, Math.max(0, (temp - 10) * 1.2));
-                    sat = 70;
-                    light = 50;
-                } else if (weatherCode >= 61 && weatherCode <= 67) {
-                    hue = 210;
-                    sat = 55;
-                    light = 35;
-                } else if (weatherCode >= 71 && weatherCode <= 77) {
-                    hue = 220;
-                    sat = 30;
-                    light = 65;
-                } else if (weatherCode >= 95) {
-                    hue = 280;
-                    sat = 65;
-                    light = 35;
-                } else if (weatherCode >= 51 && weatherCode <= 57) {
-                    hue = 200;
-                    sat = 40;
-                    light = 40;
-                } else if (weatherCode >= 80 && weatherCode <= 82) {
-                    hue = 215;
-                    sat = 50;
-                    light = 40;
-                } else {
-                    hue = 220;
-                    sat = 35;
-                    light = 40;
-                }
-                const c1 =
-                    `radial-gradient(circle at 30% 30%, hsla(${hue}, ${sat}%, ${light + 20}%, 0.30), hsla(${hue + 30}, ${sat - 20}%, ${light - 10}%, 0.05))`;
-                const c2 =
-                    `radial-gradient(circle at 70% 70%, hsla(${hue + 40}, ${sat - 20}%, ${light + 10}%, 0.20), hsla(${hue - 20}, ${sat - 30}%, ${light - 20}%, 0.03))`;
-                glowOrb.style.background = c1;
-                glowOrbBottom.style.background = c2;
-                headerCard.style.background = `rgba(255,255,255,0.04)`;
+            // ─── SCORING ─────────────────────────────────────────────────
+            function scorePlant(plant, temp, humidity) {
+                let score = 0;
+                if (temp >= plant.idealTempMin && temp <= plant.idealTempMax) score += 40;
+                else if (temp >= plant.idealTempMin - 3 && temp <= plant.idealTempMax + 3) score += 20;
+                else if (temp >= plant.idealTempMin - 6 && temp <= plant.idealTempMax + 6) score += 8;
+
+                if (humidity >= plant.idealHumidityMin && humidity <= plant.idealHumidityMax) score += 30;
+                else if (humidity >= plant.idealHumidityMin - 10 && humidity <= plant.idealHumidityMax + 10) score += 15;
+                else if (humidity >= plant.idealHumidityMin - 20 && humidity <= plant.idealHumidityMax + 20) score += 5;
+
+                const month = new Date().getMonth() + 1;
+                if (plant.plantingMonths.includes(month)) score += 20;
+                return Math.min(100, score);
             }
+
+            function getReason(plant, temp, humidity) {
+                let reason = plant.reason || '';
+                // Add dynamic details
+                const tempMatch = (temp >= plant.idealTempMin && temp <= plant.idealTempMax) ? 'ideal temperature' :
+                    (temp >= plant.idealTempMin - 5 && temp <= plant.idealTempMax + 5) ? 'acceptable temperature' :
+                    'temperature may be marginal';
+                const humMatch = (humidity >= plant.idealHumidityMin && humidity <= plant.idealHumidityMax) ? 'ideal humidity' :
+                    (humidity >= plant.idealHumidityMin - 10 && humidity <= plant.idealHumidityMax + 10) ? 'acceptable humidity' :
+                    'humidity may be marginal';
+                const season = new Date().getMonth() + 1;
+                const inSeason = plant.plantingMonths.includes(season) ? 'currently in planting season' :
+                    'not in peak planting season';
+                return `${reason} Additionally, with current conditions (${temp}°C, ${humidity}% humidity), this plant has ${tempMatch} and ${humMatch}. It is ${inSeason}.`;
+            }
+
+            // ─── ROUTING ──────────────────────────────────────────────────
+            function navigateTo(page, param) {
+                // Update sidebar active
+                document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+                const link = document.querySelector(`.sidebar-nav a[data-page="${page}"]`);
+                if (link) link.classList.add('active');
+
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+
+                if (page === 'plant-detail' && param) {
+                    selectedPlantId = param;
+                    const detailPage = $('page-plant-detail');
+                    detailPage.classList.add('active');
+                    pageTitle.textContent = 'Plant Details';
+                    renderPlantDetail(param);
+                } else {
+                    const target = $(`page-${page}`);
+                    if (target) target.classList.add('active');
+                    // Set title
+                    const titles = {
+                        dashboard: 'Dashboard',
+                        plants: 'All Plants',
+                        calendar: 'Planting Calendar',
+                        about: 'About'
+                    };
+                    pageTitle.textContent = titles[page] || 'PlantAdvisor';
+                    if (page === 'dashboard') updateDashboard();
+                    if (page === 'plants') renderAllPlants();
+                    if (page === 'calendar') renderCalendar();
+                    if (page === 'about') {}
+                }
+                // Close sidebar on mobile
+                if (window.innerWidth < 768) closeSidebarPanel();
+                currentPage = page;
+                // Update hash
+                if (page === 'plant-detail' && param) {
+                    window.location.hash = `#plant/${param}`;
+                } else {
+                    window.location.hash = `#${page}`;
+                }
+            }
+
+            // ─── SIDEBAR TOGGLE ──────────────────────────────────────────
+            function openSidebar() {
+                sidebar.classList.add('open');
+                overlay.classList.add('visible');
+            }
+
+            function closeSidebarPanel() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('visible');
+            }
+
+            hamburger.addEventListener('click', openSidebar);
+            closeSidebar.addEventListener('click', closeSidebarPanel);
+            overlay.addEventListener('click', closeSidebarPanel);
 
             // ─── FETCH WEATHER ──────────────────────────────────────────
             async function fetchWeather(lat, lon) {
@@ -1393,7 +1701,6 @@
                 return data;
             }
 
-            // ─── REVERSE GEOCODE ────────────────────────────────────────
             async function fetchLocationName(lat, lon) {
                 const url =
                     `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&accept-language=en`;
@@ -1409,34 +1716,165 @@
                 return `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
             }
 
-            // ─── SCORE PLANT MATCH ─────────────────────────────────────
-            function scorePlant(plant, temp, humidity) {
-                let score = 0;
-                // Temperature
-                if (temp >= plant.idealTempMin && temp <= plant.idealTempMax) {
-                    score += 40;
-                } else if (temp >= plant.idealTempMin - 3 && temp <= plant.idealTempMax + 3) {
-                    score += 20;
-                } else if (temp >= plant.idealTempMin - 6 && temp <= plant.idealTempMax + 6) {
-                    score += 8;
+            // ─── UPDATE DASHBOARD ──────────────────────────────────────
+            function updateDashboard() {
+                if (!weatherData) {
+                    topPlantsGrid.innerHTML = `<div class="loading-spinner"><span class="spin">🌿</span><br>Waiting for weather…</div>`;
+                    return;
                 }
-                // Humidity
-                if (humidity >= plant.idealHumidityMin && humidity <= plant.idealHumidityMax) {
-                    score += 30;
-                } else if (humidity >= plant.idealHumidityMin - 10 && humidity <= plant.idealHumidityMax + 10) {
-                    score += 15;
-                } else if (humidity >= plant.idealHumidityMin - 20 && humidity <= plant.idealHumidityMax + 20) {
-                    score += 5;
+                const temp = Math.round(weatherData.current.temperature_2m);
+                const hum = Math.round(weatherData.current.relative_humidity_2m);
+                const code = weatherData.current.weather_code;
+                // Get top 5 plants
+                const scored = PLANTS.map(p => ({ ...p, score: scorePlant(p, temp, hum) }));
+                scored.sort((a, b) => b.score - a.score);
+                const top = scored.slice(0, 5);
+
+                let html = '';
+                for (const p of top) {
+                    const matchClass = p.score >= 60 ? 'good' : 'ok';
+                    html += `
+                        <div class="plant-mini-card" data-id="${p.id}" data-page="plant-detail">
+                            <span class="icon">${p.icon}</span>
+                            <div class="name">${p.name}</div>
+                            <div class="match ${matchClass}">${p.score}% match</div>
+                        </div>
+                    `;
                 }
-                // Current month planting season
-                const month = new Date().getMonth() + 1;
-                if (plant.plantingMonths.includes(month)) {
-                    score += 20;
-                }
-                return Math.min(100, score);
+                topPlantsGrid.innerHTML = html;
+
+                // Add click listeners
+                topPlantsGrid.querySelectorAll('.plant-mini-card').forEach(el => {
+                    el.addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        navigateTo('plant-detail', id);
+                    });
+                });
+
+                // Update topbar and location
+                topWeatherIcon.textContent = getWeatherEmoji(code);
+                topTemp.textContent = `${temp}°`;
+                topCond.textContent = getWeatherDesc(code);
+                locationDisplay.textContent = locationNameStr || 'Unknown location';
+                weatherDesc.textContent = getWeatherDesc(code);
+                humidityDisp.textContent = `${hum}%`;
+                windDisp.textContent = `${Math.round(weatherData.current.wind_speed_10m)} km/h`;
+                updateTime.textContent = `Updated ${formatTime(Date.now())}`;
+                hideError();
             }
 
-            // ─── GENERATE CALENDAR ─────────────────────────────────────
+            // ─── RENDER ALL PLANTS ──────────────────────────────────────
+            function renderAllPlants() {
+                if (!weatherData) {
+                    allPlantsGrid.innerHTML = `<div class="loading-spinner"><span class="spin">🌿</span><br>Loading plants…</div>`;
+                    plantCount.textContent = '0';
+                    return;
+                }
+                const temp = Math.round(weatherData.current.temperature_2m);
+                const hum = Math.round(weatherData.current.relative_humidity_2m);
+
+                let filtered = PLANTS.filter(p => {
+                    // Filter by category
+                    if (currentFilter !== 'all' && p.category !== currentFilter) return false;
+                    // Search
+                    if (searchQuery) {
+                        const q = searchQuery.toLowerCase();
+                        return p.name.toLowerCase().includes(q) || p.sci.toLowerCase().includes(q);
+                    }
+                    return true;
+                });
+
+                // Sort by match score
+                const scored = filtered.map(p => ({ ...p, score: scorePlant(p, temp, hum) }));
+                scored.sort((a, b) => b.score - a.score);
+
+                let html = '';
+                for (const p of scored) {
+                    const matchClass = p.score >= 60 ? 'good' : 'ok';
+                    html += `
+                        <div class="plant-mini-card" data-id="${p.id}" data-page="plant-detail">
+                            <span class="icon">${p.icon}</span>
+                            <div class="name">${p.name}</div>
+                            <div class="match ${matchClass}">${p.score}%</div>
+                        </div>
+                    `;
+                }
+                allPlantsGrid.innerHTML = html || '<div style="opacity:0.5; text-align:center; padding:20px;">No plants match your filter.</div>';
+                plantCount.textContent = `${scored.length}`;
+
+                allPlantsGrid.querySelectorAll('.plant-mini-card').forEach(el => {
+                    el.addEventListener('click', function() {
+                        const id = this.dataset.id;
+                        navigateTo('plant-detail', id);
+                    });
+                });
+            }
+
+            // ─── PLANT DETAIL ──────────────────────────────────────────
+            function renderPlantDetail(id) {
+                const plant = PLANTS.find(p => p.id === id);
+                if (!plant) {
+                    plantDetailContainer.innerHTML = '<div style="opacity:0.5;">Plant not found.</div>';
+                    return;
+                }
+                if (!weatherData) {
+                    plantDetailContainer.innerHTML = '<div style="opacity:0.5;">Weather data not available.</div>';
+                    return;
+                }
+                const temp = Math.round(weatherData.current.temperature_2m);
+                const hum = Math.round(weatherData.current.relative_humidity_2m);
+                const score = scorePlant(plant, temp, hum);
+                const reason = getReason(plant, temp, hum);
+
+                let html = `
+                    <div class="plant-detail-header">
+                        <div class="icon">${plant.icon}</div>
+                        <div class="name-group">
+                            <div class="name">${plant.name}</div>
+                            <div class="sci">${plant.sci}</div>
+                            <div class="reason">⭐ ${score}% match · ${reason}</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="detail-grid-2">
+                            <div class="item"><div class="label">🌡️ Ideal Temp</div><div class="value">${plant.idealTempMin}–${plant.idealTempMax}°C</div></div>
+                            <div class="item"><div class="label">💧 Ideal Humidity</div><div class="value">${plant.idealHumidityMin}–${plant.idealHumidityMax}%</div></div>
+                            <div class="item"><div class="label">☀️ Sunlight</div><div class="value">${plant.sunlight}</div></div>
+                            <div class="item"><div class="label">🧪 Fertilizer</div><div class="value" style="font-size:12px;">${plant.fertilizer}</div></div>
+                            <div class="item"><div class="label">💧 Water per Day</div><div class="value">${plant.waterPerDay} mL</div></div>
+                            <div class="item"><div class="label">📅 Days to Harvest</div><div class="value">${plant.daysToHarvest} days</div></div>
+                        </div>
+                        <div class="detail-section">
+                            <div class="label">🧑‍🌾 Soil</div>
+                            <div class="value">${plant.soil}</div>
+                        </div>
+                        <div class="detail-section">
+                            <div class="label">📝 Description</div>
+                            <div class="value">${plant.description}</div>
+                        </div>
+                        <div class="detail-section">
+                            <div class="label">🦠 Diseases & Treatment (Sakit & Bulong)</div>
+                            <div class="value">
+                                ${plant.diseases.map(d => `<span class="disease-tag">${d.name}</span> ${d.description}<br>`).join('')}
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <div class="label">🧑‍🌾 How to Care (Pano e Alaga)</div>
+                            <div class="value">
+                                ${plant.care.map(c => `• ${c}<br>`).join('')}
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <div class="label">📅 Planting Calendar for ${plant.name}</div>
+                            <div id="plantCalendarContainer" style="margin-top:6px;">
+                                ${generateCalendar(plant)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                plantDetailContainer.innerHTML = html;
+            }
+
             function generateCalendar(plant) {
                 const now = new Date();
                 const year = now.getFullYear();
@@ -1444,38 +1882,20 @@
                 const firstDay = new Date(year, month, 1).getDay();
                 const daysInMonth = new Date(year, month + 1, 0).getDate();
                 const today = now.getDate();
-
-                // Determine which days are active (planting season)
                 const plantingMonths = plant.plantingMonths;
                 const isPlantingMonth = plantingMonths.includes(month + 1);
-
-                // Harvest estimate: days from today
                 const daysToHarvest = plant.daysToHarvest;
-                const harvestDate = new Date(now);
-                harvestDate.setDate(now.getDate() + daysToHarvest);
 
-                let html = '<div class="calendar-header">';
-                html +=
-                    `<span class="cal-label"><span class="emoji">📅</span> ${now.toLocaleString('default', { month: 'long' })} ${year}</span>`;
-                html += `<span style="font-size:11px; opacity:0.4;">🌱 ${plant.daysToHarvest} days to harvest</span>`;
-                html += '</div>';
-
-                html += '<div class="calendar-grid">';
+                let html = `<div style="font-size:13px; opacity:0.6; margin-bottom:6px;">${now.toLocaleString('default', { month: 'long' })} ${year}</div>`;
+                html += '<div class="calendar-month-grid">';
                 const dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-                for (const dn of dayNames) {
-                    html += `<div class="day-name">${dn}</div>`;
-                }
-                for (let i = 0; i < firstDay; i++) {
-                    html += `<div class="day"></div>`;
-                }
+                for (const dn of dayNames) html += `<div class="day-name">${dn}</div>`;
+                for (let i = 0; i < firstDay; i++) html += `<div class="day"></div>`;
                 for (let d = 1; d <= daysInMonth; d++) {
                     let cls = 'day';
                     if (d === today) cls += ' today';
-                    // Check if this day is in planting window (simplified: if planting month)
                     if (isPlantingMonth && d <= 15) cls += ' planting';
-                    // Water days: every 3 days
                     if (d % 3 === 0) cls += ' water';
-                    // Harvest highlight: if today + daysToHarvest is within this month
                     const checkDate = new Date(year, month, d);
                     const diffDays = Math.ceil((checkDate - now) / (1000 * 60 * 60 * 24));
                     if (diffDays === daysToHarvest || (diffDays > 0 && diffDays <= daysToHarvest && d === today + Math.min(
@@ -1485,199 +1905,112 @@
                     html += `<div class="${cls}">${d}</div>`;
                 }
                 html += '</div>';
-
-                html += '<div class="calendar-legend">';
-                html += `<span><span class="dot green"></span> Today</span>`;
-                html += `<span><span class="dot yellow"></span> Planting</span>`;
-                html += `<span><span class="dot cyan"></span> Water</span>`;
-                html += `<span><span class="dot blue"></span> Harvest</span>`;
-                html += '</div>';
-
+                html += `<div class="calendar-legend">
+                            <span><span class="dot green"></span> Today</span>
+                            <span><span class="dot yellow"></span> Planting</span>
+                            <span><span class="dot cyan"></span> Water</span>
+                            <span><span class="dot blue"></span> Harvest</span>
+                        </div>`;
                 return html;
             }
 
-            // ─── RENDER PLANTS ──────────────────────────────────────────
-            function renderPlants(plants, temp, humidity) {
-                if (!plants || plants.length === 0) {
-                    plantList.innerHTML =
-                        `<div class="loading-plants" style="padding:20px;">🌱 No matching plants found for current conditions.</div>`;
-                    plantCount.textContent = '0';
+            // ─── CALENDAR PAGE ──────────────────────────────────────────
+            function renderCalendar() {
+                if (!weatherData) {
+                    calendarContainer.innerHTML = '<div class="loading-spinner"><span class="spin">📅</span><br>Loading calendar…</div>';
+                    seasonalPlantsList.innerHTML = '';
                     return;
                 }
-
-                let html = '';
-                let count = 0;
-                for (const plant of plants) {
-                    const score = scorePlant(plant, temp, humidity);
-                    const matchClass = score >= 60 ? '' : 'low';
-                    const isExpanded = expandedPlantId === plant.id;
-
-                    html += `<div class="plant-card ${isExpanded ? 'expanded' : ''}" data-id="${plant.id}" data-score="${score}">`;
-                    html += `<div class="card-glow"></div>`;
-
-                    // Header
-                    html += `<div class="plant-card-header">`;
-                    html += `<div class="plant-icon">${plant.icon}</div>`;
-                    html += `<div class="plant-name-group">`;
-                    html += `<div class="name">${plant.name}</div>`;
-                    html += `<div class="sci-name">${plant.sci}</div>`;
-                    html +=
-                        `<span class="match-badge ${matchClass}">${score >= 60 ? '✅ Great match' : '🌱 Suitable'}</span>`;
-                    html += `</div>`;
-                    html += `<span class="expand-icon">${isExpanded ? '▾' : '▸'}</span>`;
-                    html += `</div>`;
-
-                    // Details (collapsible)
-                    html += `<div class="plant-details ${isExpanded ? 'open' : ''}">`;
-
-                    // Quick water & care pills
-                    html += `<div class="water-care-row">`;
-                    html += `<span class="pill"><span class="icon">💧</span> ${plant.waterPerDay} mL/day</span>`;
-                    html += `<span class="pill"><span class="icon">☀️</span> ${plant.sunlight}</span>`;
-                    html += `<span class="pill"><span class="icon">🧪</span> ${plant.fertilizer}</span>`;
-                    html += `</div>`;
-
-                    // Detail grid
-                    html += `<div class="detail-grid">`;
-                    html +=
-                        `<div class="detail-item"><div class="label">🌡️ Ideal Temp</div><div class="value">${plant.idealTempMin}–${plant.idealTempMax}°C</div></div>`;
-                    html +=
-                        `<div class="detail-item"><div class="label">💧 Ideal Humidity</div><div class="value">${plant.idealHumidityMin}–${plant.idealHumidityMax}%</div></div>`;
-                    html +=
-                        `<div class="detail-item"><div class="label">🧑‍🌾 Soil</div><div class="value" style="font-size:12px;">${plant.soil}</div></div>`;
-                    html +=
-                        `<div class="detail-item"><div class="label">📅 Days to Harvest</div><div class="value">${plant.daysToHarvest} days</div></div>`;
-                    html += `</div>`;
-
-                    // Description
-                    html += `<div class="detail-full"><div class="label">📝 About</div><div class="text">${plant.description}</div></div>`;
-
-                    // Diseases
-                    html += `<div class="detail-full"><div class="label">🦠 Diseases &amp; Treatment (Sakit &amp; Bulong)</div><div class="text">`;
-                    for (const d of plant.diseases) {
-                        html += `<span class="disease-tag">${d.name}</span> `;
-                        html += `<span style="opacity:0.7; font-size:13px;">${d.description}</span><br>`;
-                    }
-                    html += `</div></div>`;
-
-                    // Care instructions
-                    html += `<div class="detail-full"><div class="label">🧑‍🌾 How to Care (Pano e Alaga)</div><div class="text">`;
-                    for (const c of plant.care) {
-                        html += `• ${c}<br>`;
-                    }
-                    html += `</div></div>`;
-
-                    // Calendar
-                    html += `<div class="calendar-section">`;
-                    html += generateCalendar(plant);
-                    html += `</div>`;
-
-                    html += `</div>`; // end details
-                    html += `</div>`; // end card
-                    count++;
-                }
-
-                plantList.innerHTML = html;
-                plantCount.textContent = `${count}`;
-
-                // Attach click events to cards
-                document.querySelectorAll('.plant-card').forEach(card => {
-                    card.addEventListener('click', function(e) {
-                        const id = this.dataset.id;
-                        if (expandedPlantId === id) {
-                            expandedPlantId = null;
-                        } else {
-                            expandedPlantId = id;
-                        }
-                        // Re-render to reflect expansion
-                        if (weatherData) {
-                            const temp = Math.round(weatherData.current.temperature_2m);
-                            const hum = Math.round(weatherData.current.relative_humidity_2m);
-                            renderPlants(getRecommendedPlants(temp, hum), temp, hum);
-                        }
-                    });
-                });
-            }
-
-            // ─── GET RECOMMENDED PLANTS ────────────────────────────────
-            function getRecommendedPlants(temp, humidity) {
-                const scored = PLANTS.map(p => ({
-                    ...p,
-                    score: scorePlant(p, temp, humidity)
-                }));
-                scored.sort((a, b) => b.score - a.score);
-                // Return top 10 or all with score > 30
-                const filtered = scored.filter(p => p.score >= 30);
-                return filtered.slice(0, 12);
-            }
-
-            // ─── UPDATE UI ──────────────────────────────────────────────
-            function updateUI(data, locationNameVal) {
-                const current = data.current;
-                const temp = Math.round(current.temperature_2m);
-                const feels = Math.round(current.apparent_temperature);
-                const hum = Math.round(current.relative_humidity_2m);
-                const wind = Math.round(current.wind_speed_10m);
-                const code = current.weather_code;
-                const precip = current.precipitation != null ? current.precipitation.toFixed(1) : '0.0';
-
-                // Header
-                tempDisplay.textContent = `${temp}°`;
-                condDisplay.textContent = getWeatherDesc(code);
-                weatherIcon.textContent = getWeatherEmoji(code);
-                humidityDisplay.textContent = `${hum}%`;
-                windDisplay.textContent = `${wind} km/h`;
-                feelsDisplay.textContent = `${feels}°`;
-                uvDisplay.textContent = '—';
-
-                if (locationNameVal) {
-                    locationName.textContent = locationNameVal;
-                    locationNameStr = locationNameVal;
-                    locationName.classList.remove('loading');
-                }
-
                 const now = new Date();
-                updateTime.textContent = `Updated ${formatTime(now)}`;
+                const year = now.getFullYear();
+                const month = now.getMonth();
+                const monthName = now.toLocaleString('default', { month: 'long' });
+                calendarMonthLabel.textContent = `${monthName} ${year}`;
 
-                updateGlow(code, temp);
-                hideError();
-                setLoading(false);
+                // Show a general calendar with planting highlights for all plants
+                const firstDay = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+                const today = now.getDate();
 
-                // Render plants
-                const recommended = getRecommendedPlants(temp, hum);
-                renderPlants(recommended, temp, hum);
+                // Determine which days are planting/harvest for any plant
+                let plantingDays = new Set();
+                let harvestDays = new Set();
+                for (const plant of PLANTS) {
+                    if (plant.plantingMonths.includes(month + 1)) {
+                        // Mark first 15 days as planting (simplified)
+                        for (let d = 1; d <= 15; d++) plantingDays.add(d);
+                    }
+                    // Harvest: approximate based on daysToHarvest from today
+                    const harvestDate = new Date(now);
+                    harvestDate.setDate(now.getDate() + plant.daysToHarvest);
+                    if (harvestDate.getMonth() === month) {
+                        harvestDays.add(harvestDate.getDate());
+                    }
+                }
+
+                let html = '<div class="calendar-month-grid">';
+                const dayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+                for (const dn of dayNames) html += `<div class="day-name">${dn}</div>`;
+                for (let i = 0; i < firstDay; i++) html += `<div class="day"></div>`;
+                for (let d = 1; d <= daysInMonth; d++) {
+                    let cls = 'day';
+                    if (d === today) cls += ' today active';
+                    if (plantingDays.has(d)) cls += ' planting';
+                    if (harvestDays.has(d)) cls += ' harvest';
+                    if (d % 3 === 0) cls += ' water';
+                    html += `<div class="${cls}">${d}</div>`;
+                }
+                html += '</div>';
+                html += `<div class="calendar-legend">
+                            <span><span class="dot green"></span> Today</span>
+                            <span><span class="dot yellow"></span> Planting month</span>
+                            <span><span class="dot cyan"></span> Water</span>
+                            <span><span class="dot blue"></span> Estimated harvest</span>
+                        </div>`;
+                calendarContainer.innerHTML = html;
+
+                // Seasonal plants list: plants that are in season this month
+                const inSeason = PLANTS.filter(p => p.plantingMonths.includes(month + 1));
+                let listHtml = '';
+                for (const p of inSeason) {
+                    listHtml += `<div class="item"><span class="plant">${p.icon} ${p.name}</span><span class="months">Plant now</span></div>`;
+                }
+                seasonalPlantsList.innerHTML = listHtml || '<div style="opacity:0.4;">No plants are in season this month.</div>';
             }
 
-            // ─── REFRESH ─────────────────────────────────────────────────
+            // ─── REFRESH ──────────────────────────────────────────────────
             async function refreshWeather(showLoading = true) {
                 if (isRefreshing) return;
                 if (currentLat === null || currentLon === null) {
                     getLocation();
                     return;
                 }
-
                 isRefreshing = true;
-                if (showLoading) setLoading(true);
-
+                if (showLoading) {
+                    // show loading state on dashboard
+                }
                 try {
                     const data = await fetchWeather(currentLat, currentLon);
                     weatherData = data;
-
                     let name = locationNameStr;
-                    if (!name || name === 'Detecting…' || name === 'Loading…') {
+                    if (!name || name === 'Detecting…' || name === 'Location denied') {
                         try {
                             name = await fetchLocationName(currentLat, currentLon);
                         } catch (_) {
-                            name = `${currentLat.toFixed(3)}, ${currentLon.toFixed(3)}`;
+                            name = `${currentLat.toFixed(2)}, ${currentLon.toFixed(2)}`;
                         }
                         locationNameStr = name;
                     }
-                    updateUI(data, name);
-                    showToast('🌱 Updated plant recommendations!', 1800);
+                    // Update all views
+                    if (currentPage === 'dashboard') updateDashboard();
+                    if (currentPage === 'plants') renderAllPlants();
+                    if (currentPage === 'plant-detail' && selectedPlantId) renderPlantDetail(selectedPlantId);
+                    if (currentPage === 'calendar') renderCalendar();
+                    hideError();
+                    showToast('✅ Weather updated!', 1500);
                 } catch (err) {
-                    console.error('Weather fetch error:', err);
-                    showError(err.message || 'Failed to load weather data.');
-                    setLoading(false);
+                    console.error(err);
+                    showError(err.message || 'Failed to load weather.');
                 } finally {
                     isRefreshing = false;
                 }
@@ -1689,51 +2022,37 @@
                     showError('Geolocation not supported.');
                     return;
                 }
-
-                setLoading(true);
-                locationName.textContent = 'Detecting…';
-
                 if (geoWatchId !== null) {
                     navigator.geolocation.clearWatch(geoWatchId);
                     geoWatchId = null;
                 }
-
                 geoWatchId = navigator.geolocation.watchPosition(
                     async (pos) => {
                         const lat = pos.coords.latitude;
                         const lon = pos.coords.longitude;
-
                         if (currentLat !== null && currentLon !== null) {
                             const dLat = lat - currentLat;
                             const dLon = lon - currentLon;
                             if (Math.sqrt(dLat * dLat + dLon * dLon) < 0.001) return;
                         }
-
                         currentLat = lat;
                         currentLon = lon;
-
                         try {
                             const name = await fetchLocationName(lat, lon);
                             locationNameStr = name;
-                            locationName.textContent = name;
-                            locationName.classList.remove('loading');
+                            locationDisplay.textContent = name;
                         } catch (_) {
-                            locationNameStr = `${lat.toFixed(3)}, ${lon.toFixed(3)}`;
-                            locationName.textContent = locationNameStr;
-                            locationName.classList.remove('loading');
+                            locationNameStr = `${lat.toFixed(2)}, ${lon.toFixed(2)}`;
+                            locationDisplay.textContent = locationNameStr;
                         }
-
                         await refreshWeather(false);
                     },
                     (err) => {
                         console.warn('Geolocation error:', err);
                         if (err.code === 1) {
                             showError('Location access denied. Please enable location services.');
-                            setLoading(false);
-                            locationName.textContent = 'Location denied';
                         } else {
                             showError('Unable to get location. Check GPS settings.');
-                            setLoading(false);
                         }
                     }, {
                         enableHighAccuracy: true,
@@ -1743,48 +2062,74 @@
                 );
             }
 
-            // ─── HANDLE REFRESH BUTTON ─────────────────────────────────
-            function handleRefresh() {
+            // ─── HANDLE REFRESH BUTTON ──────────────────────────────────
+            refreshBtn.addEventListener('click', function() {
                 if (isRefreshing) return;
-                refreshBtn.textContent = '⟳ Refreshing…';
-                refreshBtn.disabled = true;
+                this.textContent = '⟳ Refreshing…';
+                this.disabled = true;
                 refreshWeather(true).finally(() => {
-                    refreshBtn.textContent = '⟳ Refresh';
-                    refreshBtn.disabled = false;
+                    this.textContent = '⟳ Refresh';
+                    this.disabled = false;
                 });
-            }
+            });
+
+            // ─── SEARCH & FILTER ──────────────────────────────────────
+            searchInput.addEventListener('input', function() {
+                searchQuery = this.value.trim();
+                renderAllPlants();
+            });
+
+            filterTabs.addEventListener('click', function(e) {
+                if (e.target.tagName === 'BUTTON') {
+                    document.querySelectorAll('.filter-tabs button').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    currentFilter = e.target.dataset.filter;
+                    renderAllPlants();
+                }
+            });
+
+            // ─── BACK FROM DETAIL ──────────────────────────────────────
+            backFromDetail.addEventListener('click', function() {
+                navigateTo('plants');
+            });
+
+            // ─── HASH ROUTING ──────────────────────────────────────────
+            window.addEventListener('hashchange', function() {
+                const hash = location.hash.slice(1) || 'dashboard';
+                if (hash.startsWith('plant/')) {
+                    const id = hash.split('/')[1];
+                    navigateTo('plant-detail', id);
+                } else {
+                    navigateTo(hash);
+                }
+            });
 
             // ─── INIT ──────────────────────────────────────────────────
             function init() {
+                // Start geolocation
                 getLocation();
-
+                // Set up auto-refresh every 5 minutes
                 if (autoRefreshInterval) clearInterval(autoRefreshInterval);
                 autoRefreshInterval = setInterval(() => {
                     if (!isRefreshing) refreshWeather(false);
-                }, 300000); // 5 min
+                }, 300000);
 
-                refreshBtn.addEventListener('click', handleRefresh);
+                // Handle initial hash
+                const hash = location.hash.slice(1) || 'dashboard';
+                if (hash.startsWith('plant/')) {
+                    const id = hash.split('/')[1];
+                    navigateTo('plant-detail', id);
+                } else {
+                    navigateTo(hash);
+                }
 
+                // Online/offline
+                window.addEventListener('online', () => { if (!isRefreshing) refreshWeather(false); });
                 document.addEventListener('visibilitychange', () => {
                     if (!document.hidden && !isRefreshing) refreshWeather(false);
                 });
-
-                window.addEventListener('online', () => {
-                    if (!isRefreshing) refreshWeather(false);
-                });
-
-                // Keyboard shortcut: R for refresh
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'r' || e.key === 'R') {
-                        if (!e.ctrlKey && !e.metaKey) {
-                            e.preventDefault();
-                            handleRefresh();
-                        }
-                    }
-                });
             }
 
-            // ─── START ──────────────────────────────────────────────────
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', init);
             } else {
@@ -1793,6 +2138,5 @@
 
         })();
     </script>
-
 </body>
 </html>
