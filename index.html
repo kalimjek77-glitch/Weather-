@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real-Time Weather</title>
+    <style>
+        /* ── Reset & base ── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0b0e1a;
+            padding: 20px;
+            transition: background 0.8s ease;
+        }
+
+        /* ── Main card ── */
+        .weather-card {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 42px;
+            padding: 36px 30px 30px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.06);
+            color: #fff;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .weather-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 42px;
+            padding: 1px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), transparent 60%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* ── Glow orb (dynamic) ── */
+        .glow-orb {
+            position: absolute;
+            top: -80px;
+            right: -60px;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 200, 50, 0.3), rgba(255, 120, 0, 0.08));
+            filter: blur(80px);
+            pointer-events: none;
+            transition: background 1.2s ease;
+            z-index: 0;
+        }
+
+        .glow-orb-bottom {
+            position: absolute;
+            bottom: -100px;
+            left: -80px;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 70% 70%, rgba(50, 150, 255, 0.2), rgba(0, 80, 200, 0.05));
+            filter: blur(90px);
+            pointer-events: none;
+            transition: background 1.2s ease;
+            z-index: 0;
+        }
+
+        /* ── Content layer ── */
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Header ── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .location-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .location-icon {
+            font-size: 20px;
+            opacity: 0.8;
+        }
+
+        .location-name {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .location-name.loading {
+            opacity: 0.5;
+            animation: pulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 0.9;
+            }
+        }
+
+        .update-time {
+            font-size: 13px;
+            opacity: 0.6;
+            font-weight: 300;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+
+        /* ── Main temp & icon ── */
+        .main-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 12px 0 6px;
+            gap: 10px;
+        }
+
+        .temp-section {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .temp-value {
+            font-size: 72px;
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: -2px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .temp-unit {
+            font-size: 28px;
+            font-weight: 300;
+            opacity: 0.7;
+            margin-left: 2px;
+        }
+
+        .weather-icon-wrap {
+            font-size: 68px;
+            line-height: 1;
+            text-shadow: 0 4px 30px rgba(0, 0, 0, 0.25);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .weather-desc {
+            font-size: 18px;
+            font-weight: 400;
+            opacity: 0.85;
+            margin-top: -4px;
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
+            text-transform: capitalize;
+        }
+
+        /* ── Feels like ── */
+        .feels-like {
+            font-size: 15px;
+            opacity: 0.6;
+            font-weight: 300;
+            margin-bottom: 18px;
+        }
+        .feels-like span {
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        /* ── Details grid ── */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 8px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .detail-item {
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 14px 10px;
+            text-align: center;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            transition: background 0.3s ease;
+        }
+
+        .detail-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .detail-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            opacity: 0.5;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            font-size: 20px;
+            font-weight: 500;
+            margin-top: 4px;
+            letter-spacing: 0.2px;
+        }
+
+        .detail-value .unit {
+            font-size: 13px;
+            font-weight: 300;
+            opacity: 0.5;
+            margin-left: 2px;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 22px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 13px;
+            opacity: 0.5;
+            font-weight: 300;
+        }
+
+        .refresh-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            padding: 6px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 400;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(4px);
+        }
+
+        .refresh-btn:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        .refresh-btn:active {
+            transform: scale(0.96);
+        }
+
+        .refresh-btn .spinner {
+            display: inline-block;
+            animation: spin 0.9s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #4caf50;
+            margin-right: 6px;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .status-dot.error {
+            background: #f44336;
+            animation: none;
+        }
+
+        /* ── Error / loading states ── */
+        .error-msg {
+            background: rgba(244, 67, 54, 0.12);
+            border: 1px solid rgba(244, 67, 54, 0.2);
+            border-radius: 14px;
+            padding: 12px 16px;
+            font-size: 14px;
+            color: #ff8a80;
+            margin-top: 10px;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+        .error-msg.visible {
+            display: block;
+        }
+
+        .loading-shimmer {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.02) 25%, rgba(255, 255, 255, 0.06) 50%, rgba(255, 255, 255, 0.02) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.8s ease-in-out infinite;
+            border-radius: 12px;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 500px) {
+            .weather-card {
+                padding: 26px 18px 22px;
+                border-radius: 32px;
+            }
+            .temp-value {
+                font-size: 54px;
+            }
+            .weather-icon-wrap {
+                font-size: 52px;
+            }
+            .location-name {
+                font-size: 17px;
+            }
+            .details-grid {
+                gap: 8px;
+            }
+            .detail-item {
+                padding: 10px 6px;
+            }
+            .detail-value {
+                font-size: 17px;
+            }
+            .main-display {
+                margin: 6px 0 2px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .temp-value {
+                font-size: 42px;
+            }
+            .weather-icon-wrap {
+                font-size: 42px;
+            }
+            .details-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+            }
+            .detail-value {
+                font-size: 15px;
+            }
+            .detail-label {
+                font-size: 10px;
+            }
+        }
+
+        /* ── Scrollbar tweak ── */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="weather-card" id="weatherCard">
+        <!-- Glow orbs -->
+        <div class="glow-orb" id="glowOrb"></div>
+        <div class="glow-orb-bottom" id="glowOrbBottom"></div>
+
+        <div class="content">
+            <!-- Header -->
+            <div class="header">
+                <div class="location-wrap">
+                    <span class="location-icon">📍</span>
+                    <span class="location-name" id="locationName">Detecting…</span>
+                </div>
+                <span class="update-time" id="updateTime">—</span>
+            </div>
+
+            <!-- Main display -->
+            <div class="main-display">
+                <div>
+                    <div class="temp-section">
+                        <span class="temp-value" id="tempValue">—</span>
+                        <span class="temp-unit">°C</span>
+                    </div>
+                    <div class="weather-desc" id="weatherDesc">Loading…</div>
+                    <div class="feels-like">
+                        Feels like <span id="feelsLike">—</span>°C
+                    </div>
+                </div>
+                <div class="weather-icon-wrap" id="weatherIcon">🌤</div>
+            </div>
+
+            <!-- Error message -->
+            <div class="error-msg" id="errorMsg">
+                ⚠️ <span id="errorText">Unable to load weather data.</span>
+            </div>
+
+            <!-- Details grid -->
+            <div class="details-grid">
+                <div class="detail-item">
+                    <div class="detail-label">💧 Humidity</div>
+                    <div class="detail-value" id="humidity">— <span class="unit">%</span></div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">🌬 Wind</div>
+                    <div class="detail-value" id="windSpeed">— <span class="unit">km/h</span></div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-label">☀️ UV / Precip</div>
+                    <div class="detail-value" id="precip">— <span class="unit">mm</span></div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                <span>
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="statusText">Live</span>
+                </span>
+                <button class="refresh-btn" id="refreshBtn">⟳ Refresh</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // ─── DOM refs ───────────────────────────────────────────────
+            const $ = (id) => document.getElementById(id);
+            const locationName = $('locationName');
+            const tempValue = $('tempValue');
+            const weatherDesc = $('weatherDesc');
+            const weatherIcon = $('weatherIcon');
+            const feelsLike = $('feelsLike');
+            const humidity = $('humidity');
+            const windSpeed = $('windSpeed');
+            const precip = $('precip');
+            const updateTime = $('updateTime');
+            const errorMsg = $('errorMsg');
+            const errorText = $('errorText');
+            const statusDot = $('statusDot');
+            const statusText = $('statusText');
+            const refreshBtn = $('refreshBtn');
+            const glowOrb = $('glowOrb');
+            const glowOrbBottom = $('glowOrbBottom');
+            const card = $('weatherCard');
+
+            // ─── State ──────────────────────────────────────────────────
+            let currentLat = null;
+            let currentLon = null;
+            let weatherData = null;
+            let locationNameStr = '';
+            let isRefreshing = false;
+            let refreshInterval = null;
+            let geoWatchId = null;
+
+            // ─── Helpers ────────────────────────────────────────────────
+            function formatTime(ts) {
+                const d = new Date(ts);
+                return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            function showError(msg) {
+                errorText.textContent = msg || 'Something went wrong.';
+                errorMsg.classList.add('visible');
+                statusDot.className = 'status-dot error';
+                statusText.textContent = 'Error';
+            }
+
+            function hideError() {
+                errorMsg.classList.remove('visible');
+                statusDot.className = 'status-dot';
+                statusText.textContent = 'Live';
+            }
+
+            function setLoading(isLoading) {
+                if (isLoading) {
+                    locationName.classList.add('loading');
+                    if (!locationNameStr) locationName.textContent = 'Loading…';
+                } else {
+                    locationName.classList.remove('loading');
+                }
+            }
+
+            // ─── Weather code → emoji + description ────────────────────
+            function getWeatherInfo(code) {
+                const map = {
+                    0: { emoji: '☀️', desc: 'Clear Sky' },
+                    1: { emoji: '🌤', desc: 'Mainly Clear' },
+                    2: { emoji: '⛅', desc: 'Partly Cloudy' },
+                    3: { emoji: '☁️', desc: 'Overcast' },
+                    45: { emoji: '🌫', desc: 'Fog' },
+                    48: { emoji: '🌫', desc: 'Depositing Rime Fog' },
+                    51: { emoji: '🌦', desc: 'Light Drizzle' },
+                    53: { emoji: '🌦', desc: 'Moderate Drizzle' },
+                    55: { emoji: '🌧', desc: 'Dense Drizzle' },
+                    56: { emoji: '🌧', desc: 'Light Freezing Drizzle' },
+                    57: { emoji: '🌧', desc: 'Dense Freezing Drizzle' },
+                    61: { emoji: '🌧', desc: 'Slight Rain' },
+                    63: { emoji: '🌧', desc: 'Moderate Rain' },
+                    65: { emoji: '🌧', desc: 'Heavy Rain' },
+                    66: { emoji: '🌧', desc: 'Light Freezing Rain' },
+                    67: { emoji: '🌧', desc: 'Heavy Freezing Rain' },
+                    71: { emoji: '❄️', desc: 'Slight Snow' },
+                    73: { emoji: '❄️', desc: 'Moderate Snow' },
+                    75: { emoji: '❄️', desc: 'Heavy Snow' },
+                    77: { emoji: '🌨', desc: 'Snow Grains' },
+                    80: { emoji: '🌦', desc: 'Slight Rain Showers' },
+                    81: { emoji: '🌧', desc: 'Moderate Rain Showers' },
+                    82: { emoji: '⛈', desc: 'Violent Rain Showers' },
+                    85: { emoji: '🌨', desc: 'Slight Snow Showers' },
+                    86: { emoji: '❄️', desc: 'Heavy Snow Showers' },
+                    95: { emoji: '⛈', desc: 'Thunderstorm' },
+                    96: { emoji: '⛈', desc: 'Thunderstorm with Hail' },
+                    99: { emoji: '⛈', desc: 'Severe Thunderstorm' },
+                };
+                return map[code] || { emoji: '🌡', desc: 'Unknown' };
+            }
+
+            // ─── Update glow based on weather ──────────────────────────
+            function updateGlow(weatherCode, temp) {
+                let hue, sat, light;
+                // Warm if clear / hot, cool if rainy / cold
+                if (weatherCode === 0 || weatherCode === 1) {
+                    // clear → warm golden
+                    hue = 40 + Math.min(20, Math.max(0, (temp - 10) * 1.5));
+                    sat = 75;
+                    light = 55;
+                } else if (weatherCode >= 61 && weatherCode <= 67) {
+                    // rain → cool blue
+                    hue = 210;
+                    sat = 60;
+                    light = 35;
+                } else if (weatherCode >= 71 && weatherCode <= 77) {
+                    // snow → icy
+                    hue = 220;
+                    sat = 30;
+                    light = 70;
+                } else if (weatherCode >= 95) {
+                    // storm → purple
+                    hue = 280;
+                    sat = 70;
+                    light = 35;
+                } else if (weatherCode >= 51 && weatherCode <= 57) {
+                    // drizzle → gray-blue
+                    hue = 200;
+                    sat = 40;
+                    light = 45;
+                } else if (weatherCode >= 80 && weatherCode <= 82) {
+                    // showers → blue
+                    hue = 215;
+                    sat = 55;
+                    light = 40;
+                } else {
+                    // default → soft
+                    hue = 220;
+                    sat = 40;
+                    light = 40;
+                }
+
+                const c1 = `radial-gradient(circle at 30% 30%, hsla(${hue}, ${sat}%, ${light + 20}%, 0.30), hsla(${hue + 30}, ${sat - 20}%, ${light - 10}%, 0.06))`;
+                const c2 = `radial-gradient(circle at 70% 70%, hsla(${hue + 40}, ${sat - 20}%, ${light + 10}%, 0.20), hsla(${hue - 20}, ${sat - 30}%, ${light - 20}%, 0.04))`;
+
+                glowOrb.style.background = c1;
+                glowOrbBottom.style.background = c2;
+
+                // Card background tint
+                card.style.background = `rgba(255,255,255,0.05)`;
+                card.style.backdropFilter = 'blur(18px)';
+            }
+
+            // ─── Fetch weather from Open-Meteo ─────────────────────────
+            async function fetchWeather(lat, lon) {
+                const url =
+                    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m,precipitation&timezone=auto`;
+
+                const resp = await fetch(url);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const data = await resp.json();
+
+                if (!data.current) throw new Error('No current weather data.');
+                return data;
+            }
+
+            // ─── Reverse geocode via Nominatim ─────────────────────────
+            async function fetchLocationName(lat, lon) {
+                const url =
+                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&accept-language=en`;
+                const resp = await fetch(url);
+                if (!resp.ok) throw new Error('Geocoding failed');
+                const data = await resp.json();
+                if (data && data.display_name) {
+                    // shorten: city, state or just the first part
+                    const parts = data.display_name.split(',').map(s => s.trim());
+                    // try to get city/town/village, then state, or fallback
+                    const addr = data.address || {};
+                    const city = addr.city || addr.town || addr.village || addr.municipality || parts[0] || 'Unknown';
+                    const state = addr.state || addr.region || '';
+                    return state ? `${city}, ${state}` : city;
+                }
+                return `${lat.toFixed(3)}, ${lon.toFixed(3)}`;
+            }
+
+            // ─── Update UI with weather data ───────────────────────────
+            function updateUI(data, locationNameVal) {
+                const current = data.current;
+                const temp = Math.round(current.temperature_2m);
+                const feels = Math.round(current.apparent_temperature);
+                const humidityVal = Math.round(current.relative_humidity_2m);
+                const wind = Math.round(current.wind_speed_10m);
+                const precipVal = current.precipitation != null ? current.precipitation.toFixed(1) : '0.0';
+                const code = current.weather_code;
+
+                const info = getWeatherInfo(code);
+
+                // Update DOM
+                tempValue.textContent = temp;
+                feelsLike.textContent = feels;
+                humidity.innerHTML = `${humidityVal} <span class="unit">%</span>`;
+                windSpeed.innerHTML = `${wind} <span class="unit">km/h</span>`;
+                precip.innerHTML = `${precipVal} <span class="unit">mm</span>`;
+                weatherDesc.textContent = info.desc;
+                weatherIcon.textContent = info.emoji;
+
+                if (locationNameVal) {
+                    locationName.textContent = locationNameVal;
+                    locationNameStr = locationNameVal;
+                }
+
+                // Update time
+                const now = new Date();
+                updateTime.textContent = `Updated ${formatTime(now)}`;
+
+                // Glow
+                updateGlow(code, temp);
+
+                // Hide error
+                hideError();
+                setLoading(false);
+            }
+
+            // ─── Main refresh ──────────────────────────────────────────
+            async function refreshWeather(showLoading = true) {
+                if (isRefreshing) return;
+                if (currentLat === null || currentLon === null) {
+                    // Try to get location again
+                    getLocation();
+                    return;
+                }
+
+                isRefreshing = true;
+                if (showLoading) setLoading(true);
+
+                try {
+                    // Fetch weather
+                    const data = await fetchWeather(currentLat, currentLon);
+                    weatherData = data;
+
+                    // Get location name if not set
+                    let name = locationNameStr;
+                    if (!name || name === 'Detecting…' || name === 'Loading…') {
+                        try {
+                            name = await fetchLocationName(currentLat, currentLon);
+                        } catch (_) {
+                            name = `${currentLat.toFixed(3)}, ${currentLon.toFixed(3)}`;
+                        }
+                        locationNameStr = name;
+                    }
+
+                    updateUI(data, name);
+                } catch (err) {
+                    console.error('Weather fetch error:', err);
+                    showError(err.message || 'Failed to load weather data.');
+                    setLoading(false);
+                    // keep last known data if any
+                    if (weatherData) {
+                        // don't update UI, just show error
+                    }
+                } finally {
+                    isRefreshing = false;
+                }
+            }
+
+            // ─── Geolocation ───────────────────────────────────────────
+            function getLocation() {
+                if (!navigator.geolocation) {
+                    showError('Geolocation not supported by your browser.');
+                    return;
+                }
+
+                setLoading(true);
+                locationName.textContent = 'Detecting…';
+
+                // Use watchPosition for continuous updates
+                if (geoWatchId !== null) {
+                    navigator.geolocation.clearWatch(geoWatchId);
+                    geoWatchId = null;
+                }
+
+                geoWatchId = navigator.geolocation.watchPosition(
+                    async (pos) => {
+                        const lat = pos.coords.latitude;
+                        const lon = pos.coords.longitude;
+
+                        // Only update if position changed significantly
+                        if (currentLat !== null && currentLon !== null) {
+                            const dLat = lat - currentLat;
+                            const dLon = lon - currentLon;
+                            if (Math.sqrt(dLat * dLat + dLon * dLon) < 0.001) {
+                                // same location, just keep going
+                                return;
+                            }
+                        }
+
+                        currentLat = lat;
+                        currentLon = lon;
+
+                        // Get location name
+                        try {
+                            const name = await fetchLocationName(lat, lon);
+                            locationNameStr = name;
+                            locationName.textContent = name;
+                        } catch (_) {
+                            locationNameStr = `${lat.toFixed(3)}, ${lon.toFixed(3)}`;
+                            locationName.textContent = locationNameStr;
+                        }
+
+                        // Fetch weather
+                        await refreshWeather(false);
+                    },
+                    (err) => {
+                        console.warn('Geolocation error:', err);
+                        // Try one more time with a fallback
+                        if (err.code === 1) {
+                            showError('Location access denied. Please enable location services.');
+                            setLoading(false);
+                            locationName.textContent = 'Location denied';
+                        } else {
+                            showError('Unable to get your location. Check GPS settings.');
+                            setLoading(false);
+                        }
+                    }, {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 60000,
+                    }
+                );
+            }
+
+            // ─── Manual refresh ────────────────────────────────────────
+            function handleRefresh() {
+                if (isRefreshing) return;
+                refreshBtn.textContent = '⟳ Refreshing…';
+                refreshBtn.disabled = true;
+                refreshWeather(true).finally(() => {
+                    refreshBtn.textContent = '⟳ Refresh';
+                    refreshBtn.disabled = false;
+                });
+            }
+
+            // ─── Init ──────────────────────────────────────────────────
+            function init() {
+                // Start geolocation
+                getLocation();
+
+                // Auto-refresh every 5 minutes
+                if (refreshInterval) clearInterval(refreshInterval);
+                refreshInterval = setInterval(() => {
+                    if (!isRefreshing) {
+                        refreshWeather(false);
+                    }
+                }, 300000); // 5 min
+
+                // Event listeners
+                refreshBtn.addEventListener('click', handleRefresh);
+
+                // Visibility change: refresh when tab becomes visible
+                document.addEventListener('visibilitychange', () => {
+                    if (!document.hidden && !isRefreshing) {
+                        refreshWeather(false);
+                    }
+                });
+
+                // Online/offline
+                window.addEventListener('online', () => {
+                    if (!isRefreshing) refreshWeather(false);
+                });
+            }
+
+            // ─── Start ──────────────────────────────────────────────────
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+        })();
+    </script>
+
+</body>
+</html>
